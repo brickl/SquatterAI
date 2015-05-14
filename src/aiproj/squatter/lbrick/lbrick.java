@@ -41,6 +41,7 @@ public class lbrick implements Player, Piece {
 			m.Row = rn.nextInt(board.size);
 			m.Col = rn.nextInt(board.size);
 		}
+		board.recordMove(m);
 		return m;
 	}
 	
