@@ -1,0 +1,2 @@
+# SquatterAI
+AI Project
