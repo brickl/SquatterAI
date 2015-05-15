@@ -11,10 +11,8 @@ public class lbrick implements Player, Piece {
 	int playerPiece, opponentPiece;
 	Move lastOppMove;
 	boolean invalidMove;
-	
-	
 
-	
+
 	public int init(int n, int p) {
 		invalidMove = false;
 		if((board = new Board(n)) != null && (lastOppMove = new Move()) != null) {
@@ -32,8 +30,23 @@ public class lbrick implements Player, Piece {
 	public Move makeMove() {
 		Move m = new Move();
 		Random rn = new Random();
+		int i, j;
 		
 		m.P = playerPiece;
+
+		/*for(i=0; i<board.size; i++) {
+			for(j=0; j<board.size; j++) {
+				m.Row = i;
+				m.Col = j;
+				if(board.isValid(m)) {
+					board.recordMove(m);
+					//board.checkCapture(m);
+					return m;
+				}
+			}
+		}*/
+		/*Make a random move:*/
+
 		m.Row = rn.nextInt(board.size);
 		m.Col = rn.nextInt(board.size);
 		
@@ -41,16 +54,19 @@ public class lbrick implements Player, Piece {
 			m.Row = rn.nextInt(board.size);
 			m.Col = rn.nextInt(board.size);
 		}
+		board.recordMove(m);
 		return m;
 	}
 	
 	public int opponentMove(Move m) {
 		if(board.isValid(m)) {
 			board.recordMove(m);
+
+			return 0;
 		} else {
 			invalidMove = true;
+			return INVALID;
 		}
-		return 1;
 	}
 	
 	public int getWinner() {
@@ -62,8 +78,5 @@ public class lbrick implements Player, Piece {
 		}
 	}
 	
-	public void printBoard(PrintStream output) {
-		board.print(output);	
-	}
-
+	public void printBoard(PrintStream output) { board.print(output); }
 }

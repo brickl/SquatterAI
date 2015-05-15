@@ -46,7 +46,8 @@ public class Referee implements Piece{
 			lastPlayedMove=P1.makeMove();
 			System.out.println("Placing to. "+lastPlayedMove.Row+":"+lastPlayedMove.Col+" by "+lastPlayedMove.P);		
 			P1.printBoard(System.out);
-			boardEmptyPieces--;			
+			boardEmptyPieces--;
+
 
 			if(P2.opponentMove(lastPlayedMove)<0)
 			{
@@ -55,23 +56,21 @@ public class Referee implements Piece{
 				P2.printBoard(System.out);
 				System.exit(1);
 			}			
-			else if(P2.getWinner()==0  && P1.getWinner()==0){
-				NumberofMoves++;	
+			else if(P2.getWinner()==0  && P1.getWinner()==0) {
+				NumberofMoves++;
 				lastPlayedMove = P2.makeMove();
-				System.out.println("Placing to. "+lastPlayedMove.Row+":"+lastPlayedMove.Col+" by "+lastPlayedMove.P);
+				System.out.println("Placing to. " + lastPlayedMove.Row + ":" + lastPlayedMove.Col + " by " + lastPlayedMove.P);
 				boardEmptyPieces--;
 				P2.printBoard(System.out);
-			
-			if(P1.opponentMove(lastPlayedMove)<0)
-			{
-				System.out.println("Exception: Player 1 rejected the move of player 2.");
-				P2.printBoard(System.out);
-				P1.printBoard(System.out);
-				System.exit(1);
+
+				if (P1.opponentMove(lastPlayedMove) < 0) {
+					System.out.println("Exception: Player 1 rejected the move of player 2.");
+					P2.printBoard(System.out);
+					P1.printBoard(System.out);
+					System.exit(1);
+				}
 			}
-			System.out.println("P1: " +P1.getWinner() + "P2: "+ P2.getWinner());
-			}
-			
+
 		}
 		System.out.println("--------------------------------------");
 		System.out.println("P2 Board is :");
