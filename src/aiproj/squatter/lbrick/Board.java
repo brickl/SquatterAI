@@ -10,7 +10,8 @@ public class Board implements Piece {
 	int[][] gameBoard;
 	int size;
 	int[] score;
-	boolean DEBUG = true;
+	boolean DEBUG = false;
+	boolean PRINTSCORE = false;
 
 	public Board (int n) {
 		int i, j;
@@ -62,7 +63,8 @@ public class Board implements Piece {
 
 	public int testWin() {
 		int i, j;
-		System.out.println("Score: Black " + score[BLACK] + " vs White " + score[WHITE]);
+		if(PRINTSCORE)
+			System.out.println("Score: Black " + score[BLACK] + " vs White " + score[WHITE]);
 		for(i=0; i<size; i++) {
 			for(j=0; j<size; j++) {
 				if(gameBoard[i][j] == EMPTY) {
@@ -96,48 +98,51 @@ public class Board implements Piece {
 
 
 	private void floodFill(int row, int col, int boundary) {
+		ArrayList<Cell> captured = new ArrayList<>();
 		ArrayList<Cell> queue = new ArrayList<>();
 		Cell cell, newcell;
 		int r, c;
-		int[][] cells = new int[size][size];
 
-		if(gameBoard[row][col] == boundary) {
-			return;
-		}
+
 		queue.add(new Cell(row, col));
-
-		System.out.println("Checking " + row + "," + col + ". Boundary = " + boundary);
+		if(DEBUG)
+			System.out.println("Checking " + row + "," + col + ". Boundary = " + boundary);
 		while(!queue.isEmpty()) {
 			cell = queue.remove(0);
 			r = cell.row;
 			c = cell.col;
-			System.out.println("Current cell: " + r + "," + c);
-			if (r == 0 || c == 0 || r == size - 1 || c == size - 1)
+
+			if((r == 0 || c == 0 || r == size-1 || c == size-1) && gameBoard[r][c] != boundary) {
+				/* reached end of board, no captured cells */
 				return;
-			if (gameBoard[r + 1][c] != boundary && cells[r+1][c] != DEAD)
-				queue.add(new Cell(r+1, c));
-			if (gameBoard[r - 1][c] != boundary && cells[r-1][c] != DEAD)
-				queue.add(new Cell(r-1, c));
-			if (gameBoard[r][c + 1] != boundary && cells[r][c+1] != DEAD)
-				queue.add(new Cell(r, c+1));
-			if (gameBoard[r][c - 1] != boundary && cells[r][c-1] != DEAD)
-				queue.add(new Cell(r, c-1));
-			cells[r][c] = DEAD;
+			} else if(gameBoard[r][c] != boundary) {
+				if(!captured.contains(newcell = new Cell(r+1, c))) {
+					queue.add(newcell);
+				}
+				if(!captured.contains(newcell = new Cell(r-1, c))) {
+					queue.add(newcell);
+				}
+				if(!captured.contains(newcell = new Cell(r, c+1))) {
+					queue.add(newcell);
+				}
+				if(!captured.contains(newcell = new Cell(r, c-1))) {
+					queue.add(newcell);
+				}
+			}
+			captured.add(cell);
 		}
 		//System.out.println("Hello?");
-		capture(cells, boundary);
+		capture(captured, boundary);
+
 	}
 
-	private void capture(int[][] cells, int capturer) {
-		int r, c;
+	private void capture(ArrayList<Cell> captured, int capturer) {;
 		if(DEBUG)
 			System.out.println("We are capturing");
-		for(r=0; r<size; r++) {
-			for(c=0; c<size; c++) {
-				if(cells[r][c] == DEAD && gameBoard[r][c] != capturer && gameBoard[r][c] < DEAD) {
-					gameBoard[r][c] += DEAD;
-					score[capturer] += 1;
-				}
+		for(Cell caught : captured) {
+			if(gameBoard[caught.row][caught.col] != capturer && gameBoard[caught.row][caught.col] < DEAD) {
+				gameBoard[caught.row][caught.col] += DEAD;
+				score[capturer] += 1;
 			}
 		}
 	}

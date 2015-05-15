@@ -12,4 +12,17 @@ public class Cell {
         col = c;
     }
 
+    public boolean equals(Object other) {
+
+        if(!(other instanceof Cell))
+            return false;
+
+        Cell otherCell = (Cell)other;
+        if(this.row == otherCell.row && this.col == otherCell.col)
+            return true;
+
+        return false;
+
+    }
+
 }
