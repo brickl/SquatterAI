@@ -53,6 +53,9 @@ public class MyGame implements Game<Board,Move,Integer> {
         //Board b = board.clone(); do not think we need this
 
         board.recordMove(m);
+
+        //board.print(System.out);
+
         return board;
     }
 
@@ -99,15 +102,18 @@ public class MyGame implements Game<Board,Move,Integer> {
 
 
         //show that it will put a piece where you want it
-        if (b.gameBoard[3][1] == p){
+        if (b.gameBoard[0][1] == p){
             utilityValue+=10;
         }
-        if (b.gameBoard[1][4] == p){
+        if (b.gameBoard[1][0] == p){
             utilityValue+=10;
         }
-        if (b.gameBoard[1][2] == p){
+        if (b.gameBoard[2][1] == p){
             utilityValue+=10;
         }
+
+        utilityValue += b.getScore()[p]*100;
+
         return utilityValue;
     }
 
@@ -123,7 +129,7 @@ public class MyGame implements Game<Board,Move,Integer> {
     //We need to clone board in lbrick make move ...
     //might need a new state as well?
     //dont think this func is used
-    public Board getNewState(Board b){
+    public Board cloneState(Board b){
         Board newB = b.clone();
         return newB;
     }

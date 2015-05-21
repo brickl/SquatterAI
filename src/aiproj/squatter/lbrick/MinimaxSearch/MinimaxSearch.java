@@ -1,5 +1,7 @@
 package aiproj.squatter.lbrick.MinimaxSearch;
 
+import aiproj.squatter.Player;
+
 /**
  * Artificial Intelligence A Modern Approach (3rd Edition): page 169.<br>
  *
@@ -68,8 +70,9 @@ public class MinimaxSearch<STATE, ACTION, PLAYER> {
         PLAYER player = game.getPlayer(state);
         System.out.printf("p: %d",player);
         for (ACTION action : game.getActions(state)) {
-            // do not appear to need to create a new state so comment out-STATE newState = game.getNewState(state);
-            double value = minValue(game.getResult(state, action), player,this.depth);
+            //newState seems required..
+            STATE newState = game.cloneState(state);
+            double value = minValue(game.getResult(newState, action), player,this.depth);
 
             if (value > resultValue) {
                 result = action;
@@ -86,8 +89,8 @@ public class MinimaxSearch<STATE, ACTION, PLAYER> {
             return game.getUtility(state, player);
         double value = Double.NEGATIVE_INFINITY;
         for (ACTION action : game.getActions(state)){
-
-            value = Math.max(value,minValue(game.getResult(state, action), player,depth_level-1));
+            STATE newState = game.cloneState(state);
+            value = Math.max(value,minValue(game.getResult(newState, action), player,depth_level-1));
         }
         return value;
     }
@@ -99,8 +102,8 @@ public class MinimaxSearch<STATE, ACTION, PLAYER> {
             return game.getUtility(state, player);
         double value = Double.POSITIVE_INFINITY;
         for (ACTION action : game.getActions(state)){
-
-            value = Math.min(value,maxValue(game.getResult(state, action), player,depth_level-1));
+            STATE newState = game.cloneState(state);
+            value = Math.min(value,maxValue(game.getResult(newState, action), player,depth_level-1));
         }
         return value;
     }

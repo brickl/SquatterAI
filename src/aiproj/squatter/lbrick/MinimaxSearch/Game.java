@@ -20,6 +20,6 @@ public interface Game<STATE, ACTION, PLAYER>{
 
     public PLAYER getPlayer(STATE s);
 
-    public STATE getNewState(STATE s);
+    public STATE cloneState(STATE s);
 
 }

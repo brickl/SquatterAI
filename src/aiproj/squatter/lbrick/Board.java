@@ -3,6 +3,8 @@ package aiproj.squatter.lbrick;
 import java.io.PrintStream;
 import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.Arrays;
+
 import aiproj.squatter.*;
 
 
@@ -43,7 +45,7 @@ public class Board implements Piece,Cloneable {
         if(move.P == Piece.WHITE){
             this.currentPlayer = Piece.BLACK;
         }
-        else if(move.P == Piece.BLACK){
+        else{
             this.currentPlayer = Piece.WHITE;
         }
 		checkCapture(move);
@@ -178,19 +180,37 @@ public class Board implements Piece,Cloneable {
     public Board clone() {
         Board b = new Board(this.getSize());
 
-        for(int r=0; r< this.getSize() ; r++){
-            for(int c=0;c<this.getSize();c++){
-                b.gameBoard[r][c] = this.gameBoard[r][c];
-            }
-        }
-        b.score = new int[]{0, 0, 0};
-        b.score[0] = this.score[0];
-        b.score[1] = this.score[1];
-        b.score[2] = this.score[2];
+        b.gameBoard = deepCopyArrayD(this.gameBoard);
+        b.score     = deepCopyArray(this.score);
+        //size wont change so shallow copy okay
         b.size = this.size;
 
         return b;
     }
+
+    public static int[] deepCopyArray(int[] original){
+        if(original == null){
+            return null;
+        }
+        int[] result = new int[original.length];
+        result = Arrays.copyOf(original, original.length);
+        return result;
+    }
+
+    // @Rorick code from stack over flow question /1564832
+    public static int[][] deepCopyArrayD(int[][] original){
+        if(original == null){
+            return null;
+        }
+
+        final int[][] result = new int[original.length][];
+        for(int i =0; i <original.length; i++){
+            result[i] = Arrays.copyOf(original[i], original[i].length);
+        }
+        return result;
+    }
+
+
 
 
     public int getCurrentPlayer(){return currentPlayer;}
