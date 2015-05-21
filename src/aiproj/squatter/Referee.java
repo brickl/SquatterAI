@@ -16,6 +16,7 @@ public class Referee implements Piece{
 	private static Player P1;
 	private static Player P2;
 	private static Move lastPlayedMove;
+
 	
 	/*
 	 * Input arguments: first board size, second path of player1 and third path of player2
@@ -25,6 +26,8 @@ public class Referee implements Piece{
 		lastPlayedMove = new Move();
 		int NumberofMoves = 0;
 		int boardEmptyPieces=Integer.valueOf(args[0])*Integer.valueOf(args[0]);
+        int gBoardEmptyPieces=Integer.valueOf(args[0])*Integer.valueOf(args[0]);
+
 		System.out.println("Referee started !");
 		try{
 			P1 = (Player)(Class.forName(args[1]).newInstance());
@@ -49,6 +52,7 @@ public class Referee implements Piece{
 			boardEmptyPieces--;
 
 
+
 			if(P2.opponentMove(lastPlayedMove)<0)
 			{
 				System.out.println("Exception: Player 2 rejected the move of player 1.");
@@ -61,6 +65,7 @@ public class Referee implements Piece{
 				lastPlayedMove = P2.makeMove();
 				System.out.println("Placing to. " + lastPlayedMove.Row + ":" + lastPlayedMove.Col + " by " + lastPlayedMove.P);
 				boardEmptyPieces--;
+
 				P2.printBoard(System.out);
 
 				if (P1.opponentMove(lastPlayedMove) < 0) {

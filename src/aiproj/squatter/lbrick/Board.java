@@ -1,20 +1,27 @@
 package aiproj.squatter.lbrick;
 
 import java.io.PrintStream;
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import aiproj.squatter.*;
 
 
-public class Board implements Piece {
+public class Board implements Piece,Cloneable {
 
-	int[][] gameBoard;
+	public int[][] gameBoard;
 	int size;
 	int[] score;
 	boolean DEBUG = false;
 	boolean PRINTSCORE = false;
 
+    //set to -1 if no one has moved
+    //do not change this - something relies on it.. not sure what.
+    int currentPlayer= 1;
+
+
 	public Board (int n) {
 		int i, j;
+
 		gameBoard = new int[n][n];
 		score = new int[]{0, 0, 0};
 		for(i=0; i<n; i++) {
@@ -33,6 +40,12 @@ public class Board implements Piece {
 
 	public void recordMove(Move move) {
 		gameBoard[move.Row][move.Col] = move.P;
+        if(move.P == Piece.WHITE){
+            this.currentPlayer = Piece.BLACK;
+        }
+        else if(move.P == Piece.BLACK){
+            this.currentPlayer = Piece.WHITE;
+        }
 		checkCapture(move);
 	}
 
@@ -136,7 +149,7 @@ public class Board implements Piece {
 
 	}
 
-	private void capture(ArrayList<Cell> captured, int capturer) {;
+	private void capture(ArrayList<Cell> captured, int capturer) {
 		if(DEBUG)
 			System.out.println("We are capturing");
 		for(Cell caught : captured) {
@@ -154,4 +167,31 @@ public class Board implements Piece {
 		m.Col = col;
 		return m;
 	}
+
+    public int[] getScore(){
+        return score;
+    }
+
+    public int getSize(){return size;}
+
+    //create a new deep copy board
+    public Board clone() {
+        Board b = new Board(this.getSize());
+
+        for(int r=0; r< this.getSize() ; r++){
+            for(int c=0;c<this.getSize();c++){
+                b.gameBoard[r][c] = this.gameBoard[r][c];
+            }
+        }
+        b.score = new int[]{0, 0, 0};
+        b.score[0] = this.score[0];
+        b.score[1] = this.score[1];
+        b.score[2] = this.score[2];
+        b.size = this.size;
+
+        return b;
+    }
+
+
+    public int getCurrentPlayer(){return currentPlayer;}
 }
