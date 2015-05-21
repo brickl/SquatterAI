@@ -8,6 +8,8 @@ import java.util.List;
 /**
  * Created by nathan on 20/05/15.
  */
+//Interface required by minimax- need to implement for our game version
+
 public interface Game<STATE, ACTION, PLAYER>{
 
     public boolean isTerminal(STATE s);

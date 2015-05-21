@@ -50,12 +50,7 @@ public class MyGame implements Game<Board,Move,Integer> {
 
     //returns board of the board after move
     public Board getResult(Board board, Move m){
-        //Board b = board.clone(); do not think we need this
-
         board.recordMove(m);
-
-        //board.print(System.out);
-
         return board;
     }
 
@@ -121,7 +116,6 @@ public class MyGame implements Game<Board,Move,Integer> {
         return utilityValue;
     }
 
-    //returns current player based on state of the game
 
     //returns the current Player. This updated & maintained by board
     //in record move this is updated
@@ -130,9 +124,7 @@ public class MyGame implements Game<Board,Move,Integer> {
         return b.getCurrentPlayer();
     }
 
-    //We need to clone board in lbrick make move ...
-    //might need a new state as well?
-    //dont think this func is used
+
     public Board cloneState(Board b){
         Board newB = b.clone();
         return newB;

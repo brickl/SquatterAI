@@ -49,6 +49,7 @@ public class MinimaxSearch<STATE, ACTION, PLAYER> {
     private Game<STATE, ACTION, PLAYER> game;
     private int expandedNodes;
     private final int ROOT = 99999;
+    //the depth of the tree you will search until
     private int depth = 3;
 
 

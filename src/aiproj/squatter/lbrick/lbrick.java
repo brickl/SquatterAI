@@ -49,30 +49,6 @@ public class lbrick implements Player, Piece {
 		}
 
 
-
-//        System.out.printf("\nTesting all functions from My game\n");
-//        System.out.printf("First: isterminaL?");
-//        System.out.print( game.isTerminal(board));
-//
-//        System.out.printf("\nBoard get results before: \n");
-//        board.print(System.out);
-//        System.out.printf("After the move\n");
-//        game.getResult(board, m);
-//        board.print(System.out);
-//
-//        System.out.printf("get Actions\n");
-//        for(Move newmove : game.getActions(board))
-//        {
-//            System.out.printf("move: col:%d row:%d\n", newmove.Col, newmove.Row);
-//        }
-//
-//        System.out.printf("\ncurrent utility");
-//        System.out.printf(": %d", game.getUtility(board,this));
-
-//        System.out.printf("testin get results\n");
-//        Board b1 = new Board(lbrick,6);
-
-
         //if we don't want this to go into min-max straight away
         if( !(this.moveCount < 0))
         {
