@@ -49,7 +49,7 @@ public class MinimaxSearch<STATE, ACTION, PLAYER> {
     private Game<STATE, ACTION, PLAYER> game;
     private int expandedNodes;
     private final int ROOT = 99999;
-    private int depth = 4;
+    private int depth = 3;
 
 
     /** Creates a new search object for a given game. */

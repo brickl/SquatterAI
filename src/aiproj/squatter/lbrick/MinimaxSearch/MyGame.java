@@ -102,16 +102,20 @@ public class MyGame implements Game<Board,Move,Integer> {
 
 
         //show that it will put a piece where you want it
+        //..only will do one of these moves. I'm really not sure why
+        //if you weight them unevenly.. it works which i don't think really makes sense
+        //
         if (b.gameBoard[0][1] == p){
             utilityValue+=10;
         }
         if (b.gameBoard[1][0] == p){
-            utilityValue+=10;
+            utilityValue+=20;
         }
         if (b.gameBoard[2][1] == p){
-            utilityValue+=10;
+            utilityValue+=30;
         }
 
+        //i have seen this work 2 moves ahead
         utilityValue += b.getScore()[p]*100;
 
         return utilityValue;
