@@ -8,7 +8,7 @@ import java.util.Arrays;
 import aiproj.squatter.*;
 
 
-public class Board implements Piece,Cloneable {
+public class Board implements Piece {
 
 	public int[][] gameBoard;
 	int size;
