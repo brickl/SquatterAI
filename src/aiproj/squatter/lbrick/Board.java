@@ -1,20 +1,29 @@
 package aiproj.squatter.lbrick;
 
 import java.io.PrintStream;
+import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.Arrays;
+
 import aiproj.squatter.*;
 
 
 public class Board implements Piece {
 
-	int[][] gameBoard;
+	public int[][] gameBoard;
 	int size;
 	int[] score;
 	boolean DEBUG = false;
 	boolean PRINTSCORE = false;
 
+    //set to -1 if no one has moved
+    //do not change this - something relies on it.. not sure what.
+    int currentPlayer= 1;
+
+
 	public Board (int n) {
 		int i, j;
+
 		gameBoard = new int[n][n];
 		score = new int[]{0, 0, 0};
 		for(i=0; i<n; i++) {
@@ -33,6 +42,12 @@ public class Board implements Piece {
 
 	public void recordMove(Move move) {
 		gameBoard[move.Row][move.Col] = move.P;
+        if(move.P == Piece.WHITE){
+            this.currentPlayer = Piece.BLACK;
+        }
+        else{
+            this.currentPlayer = Piece.WHITE;
+        }
 		checkCapture(move);
 	}
 
@@ -136,7 +151,7 @@ public class Board implements Piece {
 
 	}
 
-	private void capture(ArrayList<Cell> captured, int capturer) {;
+	private void capture(ArrayList<Cell> captured, int capturer) {
 		if(DEBUG)
 			System.out.println("We are capturing");
 		for(Cell caught : captured) {
@@ -154,4 +169,49 @@ public class Board implements Piece {
 		m.Col = col;
 		return m;
 	}
+
+    public int[] getScore(){
+        return score;
+    }
+
+    public int getSize(){return size;}
+
+    //create a new deep copy board
+    public Board clone() {
+        Board b = new Board(this.getSize());
+
+        b.gameBoard = deepCopyArrayD(this.gameBoard);
+        b.score     = deepCopyArray(this.score);
+        //size wont change so shallow copy okay
+        b.size = this.size;
+
+        return b;
+    }
+
+    public static int[] deepCopyArray(int[] original){
+        if(original == null){
+            return null;
+        }
+        int[] result = new int[original.length];
+        result = Arrays.copyOf(original, original.length);
+        return result;
+    }
+
+    // @Rorick code from stack over flow question /1564832
+    public static int[][] deepCopyArrayD(int[][] original){
+        if(original == null){
+            return null;
+        }
+
+        final int[][] result = new int[original.length][];
+        for(int i =0; i <original.length; i++){
+            result[i] = Arrays.copyOf(original[i], original[i].length);
+        }
+        return result;
+    }
+
+
+
+
+    public int getCurrentPlayer(){return currentPlayer;}
 }

@@ -38,4 +38,6 @@ public interface Player{
 	 * 
 	 */
 	public void printBoard(PrintStream output);
+
+
 }

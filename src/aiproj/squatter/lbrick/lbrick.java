@@ -1,6 +1,9 @@
 package aiproj.squatter.lbrick;
 
 import aiproj.squatter.*;
+import aiproj.squatter.lbrick.MinimaxSearch.MinimaxSearch;
+import aiproj.squatter.lbrick.MinimaxSearch.MyGame;
+
 import java.util.Random;
 
 import java.io.PrintStream;
@@ -11,6 +14,8 @@ public class lbrick implements Player, Piece {
 	int playerPiece, opponentPiece;
 	Move lastOppMove;
 	boolean invalidMove;
+
+    int moveCount=0;
 
 
 	public int init(int n, int p) {
@@ -29,22 +34,10 @@ public class lbrick implements Player, Piece {
 	
 	public Move makeMove() {
 		Move m = new Move();
+
 		Random rn = new Random();
 		int i, j;
-		
-		m.P = playerPiece;
 
-		/*for(i=0; i<board.size; i++) {
-			for(j=0; j<board.size; j++) {
-				m.Row = i;
-				m.Col = j;
-				if(board.isValid(m)) {
-					board.recordMove(m);
-					//board.checkCapture(m);
-					return m;
-				}
-			}
-		}*/
 		/*Make a random move:*/
 
 		m.Row = rn.nextInt(board.size);
@@ -54,14 +47,34 @@ public class lbrick implements Player, Piece {
 			m.Row = rn.nextInt(board.size);
 			m.Col = rn.nextInt(board.size);
 		}
+
+
+        //if we don't want this to go into min-max straight away
+        if( !(this.moveCount < 0))
+        {
+            System.out.printf("not a random move");
+            //set up the minmaxsearch
+            MyGame game = new MyGame(board, m, this.playerPiece);
+            MinimaxSearch mms = new MinimaxSearch(game);
+            Board b = board.clone();
+            //search the board but a copy of the one we have
+            m = (Move)mms.makeDecision(b);
+        }
+        else
+        {
+//           what we can do instead of minmax for early turns?
+        }
+
+        moveCount++;
+        m.P = playerPiece;
 		board.recordMove(m);
+
 		return m;
 	}
 	
 	public int opponentMove(Move m) {
 		if(board.isValid(m)) {
 			board.recordMove(m);
-
 			return 0;
 		} else {
 			invalidMove = true;
@@ -79,4 +92,9 @@ public class lbrick implements Player, Piece {
 	}
 	
 	public void printBoard(PrintStream output) { board.print(output); }
+
+    public int getPlayerPiece(){
+        return playerPiece;
+    }
+    public int getOpponentPiece(){return opponentPiece;}
 }
