@@ -1,6 +1,7 @@
 package aiproj.squatter.lbrick;
 
 import aiproj.squatter.*;
+import aiproj.squatter.lbrick.MinimaxSearch.AlphaBetaSearch;
 import aiproj.squatter.lbrick.MinimaxSearch.MinimaxSearch;
 import aiproj.squatter.lbrick.MinimaxSearch.MyGame;
 
@@ -55,10 +56,12 @@ public class lbrick implements Player, Piece {
             System.out.printf("not a random move");
             //set up the minmaxsearch
             MyGame game = new MyGame(board, m, this.playerPiece);
-            MinimaxSearch mms = new MinimaxSearch(game);
+            //MinimaxSearch mms = new MinimaxSearch(game);
+			AlphaBetaSearch aas = new AlphaBetaSearch<Board, Move, Integer>(game);
             Board b = board.clone();
             //search the board but a copy of the one we have
-            m = (Move)mms.makeDecision(b);
+            //m = (Move)mms.makeDecision(b);
+			m = (Move)aas.makeDecision(b);
         }
         else
         {
