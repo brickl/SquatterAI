@@ -36,8 +36,14 @@ public class Board implements Piece {
 
 	public boolean isValid(Move m) {
 
-		return gameBoard[m.Row][m.Col] == EMPTY;
+		try{
+            return gameBoard[m.Row][m.Col] == EMPTY;
+        }catch(ArrayIndexOutOfBoundsException e){
+            System.out.print(e.getMessage());
+            System.exit(-1);
+        }
 
+        return false;
 	}
 
 	public void recordMove(Move move) {
@@ -54,7 +60,20 @@ public class Board implements Piece {
 	public void print(PrintStream output) {
 		int i, j;
 		String boardPrintout = "";
+
+        //for human playing against AI grid
+        System.out.printf(" ");
+        for(i=0; i<size; i++){
+            System.out.printf(" %d", i);
+        }System.out.printf("\n");
+        //delete afterwards^^
+
 		for(i=0; i<size; i++) {
+            //for playing against agent delete after
+            boardPrintout += Integer.toString(i);
+            boardPrintout += " ";
+            //delete above
+
 			for(j=0; j<size; j++) {
 				if(gameBoard[i][j] == EMPTY) {
 					boardPrintout += "+";

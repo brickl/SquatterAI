@@ -96,22 +96,43 @@ public class MyGame implements Game<Board,Move,Integer> {
 
 
 
-        //show that it will put a piece where you want it
-        //..only will do one of these moves. I'm really not sure why
-        //if you weight them unevenly.. it works which i don't think really makes sense
-        //
+        //have those squares next to the corners weighted positively..
         if (b.gameBoard[0][1] == p){
             utilityValue+=10;
         }
         if (b.gameBoard[1][0] == p){
-            utilityValue+=20;
+            utilityValue+=10;
         }
-        if (b.gameBoard[2][1] == p){
-            utilityValue+=30;
+        if (b.gameBoard[0][size-2] == p){
+            utilityValue+=10;
+        }
+        if (b.gameBoard[1][size-1] == p){
+            utilityValue+=10;
+        }
+        if (b.gameBoard[size-2][size-1] == p){
+            utilityValue+=10;
+        }
+        if (b.gameBoard[size-1][size-2] == p){
+            utilityValue+=10;
         }
 
         //i have seen this work 2 moves ahead
-        utilityValue += b.getScore()[p]*100;
+        if( p == Piece.WHITE){
+            utilityValue += b.getScore()[p]*100;
+            utilityValue -= b.getScore()[Piece.BLACK]*100;
+        }
+        else if(p==Piece.BLACK){
+            utilityValue += b.getScore()[p]*100;
+            utilityValue -= b.getScore()[Piece.WHITE]*100;
+        }
+
+        // if the winner is us. or not us
+        if(b.testWin() == p){
+            utilityValue += 1000;
+        }
+        else if( b.testWin() == Piece.WHITE && p == Piece.BLACK || b.testWin() == Piece.BLACK && p == Piece.WHITE ){
+            utilityValue -= 1000;
+        }
 
         return utilityValue;
     }

@@ -69,7 +69,7 @@ public class MinimaxSearch<STATE, ACTION, PLAYER> {
         ACTION result = null;
         double resultValue = Double.NEGATIVE_INFINITY;
         PLAYER player = game.getPlayer(state);
-        System.out.printf("p: %d",player);
+
         for (ACTION action : game.getActions(state)) {
             //newState seems required..
             STATE newState = game.cloneState(state);

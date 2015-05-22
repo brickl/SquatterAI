@@ -34,7 +34,11 @@ public class lbrick implements Player, Piece {
 	}
 	
 	public Move makeMove() {
+
+
+        System.out.printf("Scores white: %d, black: %d", this.board.getScore()[Piece.WHITE], this.board.getScore()[Piece.BLACK]);
 		Move m = new Move();
+        Move m2= new Move();
 
 		Random rn = new Random();
 		int i, j;
@@ -51,7 +55,7 @@ public class lbrick implements Player, Piece {
 
 
         //if we don't want this to go into min-max straight away
-        if( !(this.moveCount < 0))
+        if( !(this.moveCount < 2))
         {
             System.out.printf("not a random move");
             //set up the minmaxsearch
@@ -66,6 +70,32 @@ public class lbrick implements Player, Piece {
         else
         {
 //           what we can do instead of minmax for early turns?
+            //arround corner moves starting with bottom left
+            m.Row = board.getSize()-2;
+            m.Col = 0;
+
+            //other piece for bottom left
+            m2.Row = board.getSize()-1;
+            m2.Col = 1;
+
+            //so if both moves are valid we will do one
+            //in future should also check all other cells near
+            if( board.isValid(m) || board.isValid(m2)){
+                if(board.isValid(m)){
+                    m.P = playerPiece;
+                    board.recordMove(m);
+                    moveCount++;
+                    return m;
+                }
+                else if(board.isValid(m2)){
+                    m2.P = playerPiece;
+                    board.recordMove(m2);
+                    moveCount++;
+                    return m2;
+                }
+            }
+
+
         }
 
         moveCount++;
