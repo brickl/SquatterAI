@@ -151,3 +151,4 @@ public class MyGame implements Game<Board,Move,Integer> {
         return newB;
     }
 }
+
