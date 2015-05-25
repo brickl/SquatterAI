@@ -12,21 +12,13 @@ import java.util.List;
 
 
 /**
- * Created by nathan on 20/05/15.
+ * Created by Nathan on 20/05/15.
  */
 
 //My Game is basically the Helper function to Minimax Search providing certain methods
 public class MyGame implements Game<Board,Move,Integer> {
 
-    private Board board; //this is the board
-    private Move move; //
-    private Integer player;   // Integer represents class
 
-    public MyGame(Board b,Move m,Integer p){
-        this.board = b;
-        this.move = m;
-        this.player = p;
-    }
 
     //function returns if game is terminal?
     public boolean isTerminal(Board b)
