@@ -14,7 +14,7 @@ public class Board implements Piece {
 	int size;
 	int[] score;
 	boolean DEBUG = false;
-	boolean PRINTSCORE = true;
+	boolean PRINTSCORE = false;
 	boolean PRINTCOORDS = true;
 
     //set to -1 if no one has moved
@@ -165,8 +165,9 @@ public class Board implements Piece {
 				if(!captured.contains(newcell = new Cell(r, c-1))) {
 					queue.add(newcell);
 				}
+				captured.add(cell);
 			}
-			captured.add(cell);
+
 		}
 		capture(captured, boundary);
 	}

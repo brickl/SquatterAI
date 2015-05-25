@@ -49,7 +49,7 @@ public class AlphaBetaSearch<STATE, ACTION, PLAYER>{
 
     Game<STATE, ACTION, PLAYER> game;
     private int expandedNodes;
-    private int DEPTH = 4;
+    private static final int DEPTH = 4;
 
     /** Creates a new search object for a given game. */
     public static <STATE, ACTION, PLAYER> AlphaBetaSearch<STATE, ACTION, PLAYER> createFor(

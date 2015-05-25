@@ -83,51 +83,90 @@ public class SquatterGame implements Piece, Game<Board,Move,Integer> {
     //utility function returns a score
     //no idea on a good function.. soo we need to adjust
     public int getUtility(Board b, Integer p){
-        int utilityValue=0;
-        int size = b.getSize();
 
+        int utilityValue = weight_corners(b, p);
+        utilityValue += check_connections(b, p);
 
-
-        //have those squares next to the corners weighted positively..
-        if (b.gameBoard[0][1] == p){
-            utilityValue+=10;
-        }
-        if (b.gameBoard[1][0] == p){
-            utilityValue+=10;
-        }
-        if (b.gameBoard[0][size-2] == p){
-            utilityValue+=10;
-        }
-        if (b.gameBoard[1][size-1] == p){
-            utilityValue+=10;
-        }
-        if (b.gameBoard[size-2][size-1] == p){
-            utilityValue+=10;
-        }
-        if (b.gameBoard[size-1][size-2] == p){
-            utilityValue+=10;
-        }
-
+        utilityValue += b.getScore()[p]*100;
         //i have seen this work 2 moves ahead
         if( p == WHITE){
-            utilityValue += b.getScore()[p]*100;
             utilityValue -= b.getScore()[BLACK]*100;
         }
-        else if(p==BLACK){
-            utilityValue += b.getScore()[p]*100;
+        else if(p == BLACK){
             utilityValue -= b.getScore()[WHITE]*100;
         }
 
         // if the winner is us. or not us
         if(b.testWin() == p){
             utilityValue += 1000;
-        }
-        else if( b.testWin() == WHITE && p == BLACK || b.testWin() == BLACK && p == WHITE ){
+        } else if( b.testWin()%DEAD != 0 ){
+            /* The other player has won */
             utilityValue -= 1000;
         }
 
         return utilityValue;
     }
+
+    private int weight_corners(Board b, int p) {
+        int utilityValue = 0;
+        /* Add value if cells next to corners are filled */
+        if (b.gameBoard[0][1] == p){
+            utilityValue+=10;
+        }
+        if (b.gameBoard[1][0] == p){
+            utilityValue+=10;
+        }
+        if (b.gameBoard[0][b.getSize()-2] == p){
+            utilityValue+=10;
+        }
+        if (b.gameBoard[1][b.getSize()-1] == p){
+            utilityValue+=10;
+        }
+        if (b.gameBoard[b.getSize()-2][b.getSize()-1] == p){
+            utilityValue+=10;
+        }
+        if (b.gameBoard[b.getSize()-1][b.getSize()-2] == p){
+            utilityValue+=10;
+        }
+
+        /* Reduce value if corners are filled */
+        if (b.gameBoard[b.getSize()-1][b.getSize()-1] == p) {
+            utilityValue -= 20;
+        } if (b.gameBoard[b.getSize()-1][0] == p) {
+            utilityValue -= 20;
+        } if (b.gameBoard[0][b.getSize()-1] == p) {
+            utilityValue -= 20;
+        } if (b.gameBoard[0][0] == p) {
+            utilityValue -= 20;
+        }
+
+        return utilityValue;
+    }
+
+
+    private int check_connections(Board b, int p) {
+        int i, j, utility = 0;
+        for (i = 0; i < b.getSize(); i++) {
+            for (j = 0; j < b.getSize(); j++) {
+                if (b.gameBoard[i][j] == p) {
+                    /* Increase utility for each pair of neighbours
+                    (therefore only need to check half of the neighbours of each piece */
+                    try {
+                        if (b.gameBoard[i][j + 1] == p
+                                || b.gameBoard[i + 1][j + 1] == p
+                                || b.gameBoard[i - 1][j + 1] == p
+                                || b.gameBoard[i + 1][j] == p) {
+                            utility += 20;
+                        }
+                    } catch (ArrayIndexOutOfBoundsException e) {
+                    }
+                }
+            }
+        }
+        return utility;
+    }
+
+
 
 
     //returns the current Player. This updated & maintained by board
