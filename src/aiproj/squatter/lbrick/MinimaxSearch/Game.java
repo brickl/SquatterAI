@@ -9,20 +9,20 @@ import java.util.List;
  * Created by nathan on 20/05/15.
  */
 
-//Interface required by minimax- need to implement for our game version
+/* Interface required by AlphaBetaSearch */
 
 public interface Game<STATE, ACTION, PLAYER>{
 
-    public boolean isTerminal(STATE s);
+    boolean isTerminal(STATE s);
 
-    public STATE getResult(STATE s, ACTION a);
+    STATE getResult(STATE s, ACTION a);
 
-    public ACTION[] getActions(STATE s);
+    ACTION[] getActions(STATE s);
 
-    public int getUtility(STATE s, PLAYER p);
+    int getUtility(STATE s, PLAYER p);
 
-    public PLAYER getPlayer(STATE s);
+    PLAYER getPlayer(STATE s);
 
-    public STATE cloneState(STATE s);
+    STATE cloneState(STATE s);
 
 }

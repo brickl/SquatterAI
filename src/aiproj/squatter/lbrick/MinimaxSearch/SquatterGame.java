@@ -12,11 +12,11 @@ import java.util.List;
 
 
 /**
- * Created by Nathan on 20/05/15.
+ * Created by nathan on 20/05/15.
  */
 
-//My Game is basically the Helper function to Minimax Search providing certain methods
-public class MyGame implements Game<Board,Move,Integer> {
+/* Squatter Game is a helper class for AlphaBetaSearch, providing certain methods */
+public class SquatterGame implements Piece, Game<Board,Move,Integer> {
 
 
 
@@ -31,7 +31,7 @@ public class MyGame implements Game<Board,Move,Integer> {
             for(int row=0; row < size; row++)
             {
                 //if a piece is EMPTY then game is not terminal
-                if(board[column][row] == Piece.EMPTY)
+                if(board[column][row] == EMPTY)
                 {
                     return false;
                 }
@@ -40,13 +40,13 @@ public class MyGame implements Game<Board,Move,Integer> {
         return true;
     }
 
-    //returns board of the board after move
+    //returns state of the board after move
     public Board getResult(Board board, Move m){
         board.recordMove(m);
         return board;
     }
 
-    //returns all possible actions based on board;
+    //returns all possible moves based on board;
     public Move[] getActions(Board b){
         int[][] board;
         int size = b.getSize();
@@ -60,7 +60,7 @@ public class MyGame implements Game<Board,Move,Integer> {
             for(int row=0; row < size; row++)
             {
                 //if a piece is EMPTY then we can move there
-                if(board[row][column] == Piece.EMPTY)
+                if(board[row][column] == EMPTY)
                 {
                     move = new Move();
                     move.Row = row;
@@ -109,20 +109,20 @@ public class MyGame implements Game<Board,Move,Integer> {
         }
 
         //i have seen this work 2 moves ahead
-        if( p == Piece.WHITE){
+        if( p == WHITE){
             utilityValue += b.getScore()[p]*100;
-            utilityValue -= b.getScore()[Piece.BLACK]*100;
+            utilityValue -= b.getScore()[BLACK]*100;
         }
-        else if(p==Piece.BLACK){
+        else if(p==BLACK){
             utilityValue += b.getScore()[p]*100;
-            utilityValue -= b.getScore()[Piece.WHITE]*100;
+            utilityValue -= b.getScore()[WHITE]*100;
         }
 
         // if the winner is us. or not us
         if(b.testWin() == p){
             utilityValue += 1000;
         }
-        else if( b.testWin() == Piece.WHITE && p == Piece.BLACK || b.testWin() == Piece.BLACK && p == Piece.WHITE ){
+        else if( b.testWin() == WHITE && p == BLACK || b.testWin() == BLACK && p == WHITE ){
             utilityValue -= 1000;
         }
 

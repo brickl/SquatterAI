@@ -14,7 +14,8 @@ public class Board implements Piece {
 	int size;
 	int[] score;
 	boolean DEBUG = false;
-	boolean PRINTSCORE = false;
+	boolean PRINTSCORE = true;
+	boolean PRINTCOORDS = true;
 
     //set to -1 if no one has moved
     //do not change this - something relies on it.. not sure what.
@@ -26,6 +27,7 @@ public class Board implements Piece {
 
 		gameBoard = new int[n][n];
 		score = new int[]{0, 0, 0};
+
 		for(i=0; i<n; i++) {
 			for(j=0; j<n; j++) {
 				gameBoard[i][j] = EMPTY;
@@ -39,11 +41,8 @@ public class Board implements Piece {
 		try{
             return gameBoard[m.Row][m.Col] == EMPTY;
         }catch(ArrayIndexOutOfBoundsException e){
-            System.out.print(e.getMessage());
-            System.exit(-1);
+            return false;
         }
-
-        return false;
 	}
 
 	public void recordMove(Move move) {
@@ -61,18 +60,22 @@ public class Board implements Piece {
 		int i, j;
 		String boardPrintout = "";
 
-        //for human playing against AI grid
-        System.out.printf(" ");
-        for(i=0; i<size; i++){
-            System.out.printf(" %d", i);
-        }System.out.printf("\n");
-        //delete afterwards^^
+        /* For human user to play against computer */
+		if(PRINTCOORDS) {
+			System.out.printf(" ");
+			for (i = 0; i < size; i++) {
+				System.out.printf(" %d", i);
+			}
+			System.out.printf("\n");
+		}
 
 		for(i=0; i<size; i++) {
-            //for playing against agent delete after
-            boardPrintout += Integer.toString(i);
-            boardPrintout += " ";
-            //delete above
+			if(PRINTCOORDS) {
+				/* For human user to play against computer */
+				boardPrintout += Integer.toString(i);
+				boardPrintout += " ";
+			}
+
 
 			for(j=0; j<size; j++) {
 				if(gameBoard[i][j] == EMPTY) {
@@ -147,7 +150,7 @@ public class Board implements Piece {
 			c = cell.col;
 
 			if((r == 0 || c == 0 || r == size-1 || c == size-1) && gameBoard[r][c] != boundary) {
-				/* reached end of board, no captured cells */
+				/* reached edge of board, no captured cells */
 				return;
 			} else if(gameBoard[r][c] != boundary) {
 				if(!captured.contains(newcell = new Cell(r+1, c))) {
@@ -165,29 +168,26 @@ public class Board implements Piece {
 			}
 			captured.add(cell);
 		}
-		//System.out.println("Hello?");
 		capture(captured, boundary);
-
 	}
 
 	private void capture(ArrayList<Cell> captured, int capturer) {
 		if(DEBUG)
 			System.out.println("We are capturing");
 		for(Cell caught : captured) {
-			if(gameBoard[caught.row][caught.col] != capturer && gameBoard[caught.row][caught.col] < DEAD) {
+
+			/* Capture all cells that haven't already been captured */
+			if(gameBoard[caught.row][caught.col] < DEAD) {
 				gameBoard[caught.row][caught.col] += DEAD;
-				score[capturer] += 1;
+
+				/* Only increase score if captured piece does not belong to the capturer */
+				if(gameBoard[caught.row][caught.col] != capturer) {
+					score[capturer] += 1;
+				}
 			}
 		}
 	}
 
-	private Move createMove(int P, int row, int col) {
-		Move m = new Move();
-		m.P = P;
-		m.Row = row;
-		m.Col = col;
-		return m;
-	}
 
     public int[] getScore(){
         return score;
@@ -211,9 +211,7 @@ public class Board implements Piece {
         if(original == null){
             return null;
         }
-        int[] result = new int[original.length];
-        result = Arrays.copyOf(original, original.length);
-        return result;
+        return Arrays.copyOf(original, original.length);
     }
 
     // @Rorick code from stack over flow question /1564832

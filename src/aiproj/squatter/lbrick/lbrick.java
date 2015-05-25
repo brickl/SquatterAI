@@ -2,8 +2,7 @@ package aiproj.squatter.lbrick;
 
 import aiproj.squatter.*;
 import aiproj.squatter.lbrick.MinimaxSearch.AlphaBetaSearch;
-import aiproj.squatter.lbrick.MinimaxSearch.MinimaxSearch;
-import aiproj.squatter.lbrick.MinimaxSearch.MyGame;
+import aiproj.squatter.lbrick.MinimaxSearch.SquatterGame;
 
 import java.util.Random;
 
@@ -13,16 +12,18 @@ public class lbrick implements Player, Piece {
 	
 	Board board;
 	Move lastOppMove;
+	SquatterGame game;
 	int playerPiece, opponentPiece, moveCount;
 	boolean invalidMove;
-	boolean PRINTSCORE = true;
 
 
-	public int init(int n, int p) {
+
+	public int init(int size, int p) {
 		moveCount = 0;
 		invalidMove = false;
 
-		if((board = new Board(n)) != null && (lastOppMove = new Move()) != null) {
+
+		if((board = new Board(size)) != null && (lastOppMove = new Move()) != null && (game = new SquatterGame()) != null) {
 			playerPiece = p;
 			if(p == WHITE) {
 				opponentPiece = BLACK;
@@ -36,24 +37,17 @@ public class lbrick implements Player, Piece {
 	
 	public Move makeMove() {
 
-		if(PRINTSCORE)
-        	System.out.printf("Scores white: %d, black: %d", this.board.getScore()[WHITE], this.board.getScore()[BLACK]);
-
 		Move m = new Move();
         Move m2= new Move();
 
         //if we don't want this to go into min-max straight away
         if(this.moveCount >= 2)
         {
-            //System.out.printf("not a random move");
-            //set up the minmaxsearch
-            MyGame game = new MyGame(board, m, this.playerPiece);
-            //MinimaxSearch mms = new MinimaxSearch(game);
-			AlphaBetaSearch aas = new AlphaBetaSearch<Board, Move, Integer>(game);
+			AlphaBetaSearch engine = new AlphaBetaSearch<>(game);
             Board b = board.clone();
             //search the board but a copy of the one we have
             //m = (Move)mms.makeDecision(b);
-			m = (Move)aas.makeDecision(b);
+			m = (Move)engine.makeDecision(b);
         }
         else {
 //           what we can do instead of minmax for early turns?
