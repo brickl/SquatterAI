@@ -1,0 +1,11 @@
+
+General Structure of the code
+
+Brick I'm not sure how much of the player/Squatter game you have changed
+
+
+	-Used AIMA library and implemented the min-max tree alpha, beta pruning. 
+	-Used floodfill to handle our checking of captured pieces.
+	-SquatterGame class handles most of the grunt work for the algorithm, handling both the utility & get actions function. 
+	-Get actions has a significant role, by returning the most useful moves for that boards state.Moves that are diagonal in nature have a higher priority as we have found these the most effective in game playing.
+	-Utility function mainly checks to see if we will capture any pieces or if the opponent will capture any pieces. The simplicity of this method is too reduce computational complexity.
