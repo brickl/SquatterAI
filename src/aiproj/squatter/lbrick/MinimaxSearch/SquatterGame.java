@@ -75,6 +75,7 @@ public class SquatterGame implements Piece, Game<Board,Move,Integer> {
                     move.P = b.getCurrentPlayer();
                     //need a function that will return its given value
                     value = calcValue(b, move);
+                    //value = 1;
                     map.put(move, value);
                 }
         }
@@ -184,7 +185,7 @@ public class SquatterGame implements Piece, Game<Board,Move,Integer> {
     //no idea on a good function.. soo we need to adjust
     public int getUtility(Board b, Integer p){
 
-        int utilityValue=0;// = weight_corners(b, p);
+        int utilityValue=0;// weight_corners(b, p);
         utilityValue += check_connections(b, p);
 
         utilityValue += b.getScore()[p]*100;
@@ -210,6 +211,7 @@ public class SquatterGame implements Piece, Game<Board,Move,Integer> {
 
     private int weight_corners(Board b, int p) {
         int utilityValue = 0;
+        int size = b.getSize();
         /* Add value if cells next to corners are filled */
         if (b.gameBoard[0][1] == p){
             utilityValue+=10;
@@ -217,25 +219,25 @@ public class SquatterGame implements Piece, Game<Board,Move,Integer> {
         if (b.gameBoard[1][0] == p){
             utilityValue+=10;
         }
-        if (b.gameBoard[0][b.getSize()-2] == p){
+        if (b.gameBoard[0][size-2] == p){
             utilityValue+=10;
         }
-        if (b.gameBoard[1][b.getSize()-1] == p){
+        if (b.gameBoard[1][size-1] == p){
             utilityValue+=10;
         }
-        if (b.gameBoard[b.getSize()-2][b.getSize()-1] == p){
+        if (b.gameBoard[size-2][size-1] == p){
             utilityValue+=10;
         }
-        if (b.gameBoard[b.getSize()-1][b.getSize()-2] == p){
+        if (b.gameBoard[size-1][size-2] == p){
             utilityValue+=10;
         }
 
         /* Reduce value if corners are filled */
-        if (b.gameBoard[b.getSize()-1][b.getSize()-1] == p) {
+        if (b.gameBoard[size-1][size-1] == p) {
             utilityValue -= 20;
-        } if (b.gameBoard[b.getSize()-1][0] == p) {
+        } if (b.gameBoard[size-1][0] == p) {
             utilityValue -= 20;
-        } if (b.gameBoard[0][b.getSize()-1] == p) {
+        } if (b.gameBoard[0][size-1] == p) {
             utilityValue -= 20;
         } if (b.gameBoard[0][0] == p) {
             utilityValue -= 20;
