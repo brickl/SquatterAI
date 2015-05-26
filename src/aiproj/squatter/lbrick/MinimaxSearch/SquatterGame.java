@@ -77,6 +77,7 @@ public class SquatterGame implements Piece, Game<Board,Move,Integer> {
                     value = calcValue(b, move);
                     //value = 1;
                     map.put(move, value);
+
                 }
         }
 
@@ -86,8 +87,10 @@ public class SquatterGame implements Piece, Game<Board,Move,Integer> {
         sorted_map.putAll(map);
         //move data to array
         for(Move m : sorted_map.keySet()){
+            //System.out.printf("val %d, Move row: %d, col: %d",sorted_map.get(m),m.Row, m.Col);
+            //try{Thread.sleep(1000);}catch(Exception e){}
             moves[i++] = m;
-        }
+        }//System.out.println();
 
         return moves;
     }
@@ -109,14 +112,14 @@ public class SquatterGame implements Piece, Game<Board,Move,Integer> {
         }
         //we want to look at all neighbouring cells
 
-        try{
-            //above
-            if( (square = b.gameBoard[m.Row-1][m.Col]) == currentPlayer || square == opponent ){
-                calculatedValue +=1;
-            }
-        }catch(ArrayIndexOutOfBoundsException e){
-            //
-        }
+//        try{
+//            //above
+//            if( (square = b.gameBoard[m.Row-1][m.Col]) == currentPlayer || square == opponent ){
+//                calculatedValue +=1;
+//            }
+//        }catch(ArrayIndexOutOfBoundsException e){
+//            //
+//        }
         try{
             //diagonal to the upper right
             if((square = b.gameBoard[m.Row-1][m.Col+1]) == currentPlayer || square == opponent ){
@@ -125,14 +128,14 @@ public class SquatterGame implements Piece, Game<Board,Move,Integer> {
         }catch(ArrayIndexOutOfBoundsException e){
             //
         }
-        try{
-            //to the right
-            if((square = b.gameBoard[m.Row][m.Col+1]) == currentPlayer || square == opponent){
-                calculatedValue +=1;
-            }
-        }catch(ArrayIndexOutOfBoundsException e){
-            //
-        }
+//        try{
+//            //to the right
+//            if((square = b.gameBoard[m.Row][m.Col+1]) == currentPlayer || square == opponent){
+//                calculatedValue +=1;
+//            }
+//        }catch(ArrayIndexOutOfBoundsException e){
+//            //
+//        }
         try{
             //to the right bottom diagonal
             if((square = b.gameBoard[m.Row+1][m.Col+1]) == currentPlayer || square == opponent){
@@ -141,14 +144,14 @@ public class SquatterGame implements Piece, Game<Board,Move,Integer> {
         }catch(ArrayIndexOutOfBoundsException e){
             //
         }
-        try{
-            //below it
-            if((square = b.gameBoard[m.Row+1][m.Col]) == currentPlayer || square == opponent){
-                calculatedValue +=1;
-            }
-        }catch(ArrayIndexOutOfBoundsException e){
-            //
-        }
+//        try{
+//            //below it
+//            if((square = b.gameBoard[m.Row+1][m.Col]) == currentPlayer || square == opponent){
+//                calculatedValue +=1;
+//            }
+//        }catch(ArrayIndexOutOfBoundsException e){
+//            //
+//        }
         try{
             //to left bottom diagonal
             if( (square = b.gameBoard[m.Row+1][m.Col-1]) == currentPlayer || square == opponent){
@@ -157,14 +160,14 @@ public class SquatterGame implements Piece, Game<Board,Move,Integer> {
         }catch(ArrayIndexOutOfBoundsException e){
             //
         }
-        try{
-            //to left
-            if((square = b.gameBoard[m.Row][m.Col-1]) == b.getCurrentPlayer() || square == opponent){
-                calculatedValue +=1;
-            }
-        }catch(ArrayIndexOutOfBoundsException e){
-            //
-        }
+//        try{
+//            //to left
+//            if((square = b.gameBoard[m.Row][m.Col-1]) == b.getCurrentPlayer() || square == opponent){
+//                calculatedValue +=1;
+//            }
+//        }catch(ArrayIndexOutOfBoundsException e){
+//            //
+//        }
         try{
             //to left upper diagonal
             if((square =b.gameBoard[m.Row-1][m.Col-1]) == b.getCurrentPlayer() || square == opponent){
@@ -185,8 +188,9 @@ public class SquatterGame implements Piece, Game<Board,Move,Integer> {
     //no idea on a good function.. soo we need to adjust
     public int getUtility(Board b, Integer p){
 
-        int utilityValue=0;// weight_corners(b, p);
-        utilityValue += check_connections(b, p);
+        int utilityValue=0;//
+        //utilityValue += weight_corners(b, p);
+        //utilityValue += check_connections(b, p);
 
         utilityValue += b.getScore()[p]*100;
 
