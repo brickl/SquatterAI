@@ -66,7 +66,7 @@ public class Random implements Player, Piece {
             return INVALID;
         }
         else {
-            return board.testWin();
+            return board.checkState();
         }
     }
 

@@ -22,6 +22,10 @@ public class Board implements Piece {
     int currentPlayer= 1;
 
 
+	/**
+	 * Constructor.
+	 * @param n The size of the board to be created.
+	 */
 	public Board (int n) {
 		int i, j;
 
@@ -36,6 +40,12 @@ public class Board implements Piece {
 		size = n;
 	}
 
+
+	/**
+	 * Checks if a move is valid, given the current board state.
+	 * @param m
+	 * @return
+	 */
 	public boolean isValid(Move m) {
 
 		try{
@@ -45,6 +55,11 @@ public class Board implements Piece {
         }
 	}
 
+
+	/**
+	 * Updates the board configuration according to the given move.
+	 * @param move The move that has been made.
+	 */
 	public void recordMove(Move move) {
 		gameBoard[move.Row][move.Col] = move.P;
         if(move.P == Piece.WHITE){
@@ -56,6 +71,11 @@ public class Board implements Piece {
 		checkCapture(move);
 	}
 
+
+	/**
+	 * Prints the current board configuration.
+	 * @param output The printstream to which the output should be printed.
+	 */
 	public void print(PrintStream output) {
 		int i, j;
 		String boardPrintout = "";
@@ -98,7 +118,13 @@ public class Board implements Piece {
 		output.print(boardPrintout);
 	}
 
-	public int testWin() {
+
+	/**
+	 * Checks if the game if finished, and if so whether there is a winner.
+	 * @return EMPTY if the game is unfinished, DEAD if the game is drawn, BLACK if the black player has won or WHITE
+	 * if the white player has won.
+	 */
+	public int checkState() {
 		int i, j;
 		if(PRINTSCORE)
 			System.out.println("Score: Black " + score[BLACK] + " vs White " + score[WHITE]);
@@ -115,9 +141,13 @@ public class Board implements Piece {
 			return WHITE;
 		}
 		return DEAD;
-
 	}
 
+
+	/**
+	 * Checks to see if the given move has captured any pieces.
+	 * @param m The move to be made.
+	 */
 	public void checkCapture(Move m) {
 
 		if(m.Row+1 < size) {
@@ -134,6 +164,12 @@ public class Board implements Piece {
 	}
 
 
+	/**
+	 * Uses a variation of the floodfill algorithm to check if the given row and column is part of a captured region.
+	 * @param row The row of the cell to be checked.
+	 * @param col The column of the cell to be checked.
+	 * @param boundary The colour of the pieces that will form the boundary of the region.
+	 */
 	private void floodFill(int row, int col, int boundary) {
 		ArrayList<Cell> captured = new ArrayList<>();
 		ArrayList<Cell> queue = new ArrayList<>();
@@ -172,6 +208,12 @@ public class Board implements Piece {
 		capture(captured, boundary);
 	}
 
+
+	/**
+	 * Marks pieces in the given cells as captured and updates the score.
+	 * @param captured The cells that have been captured.
+	 * @param capturer The player who captured the cells.
+	 */
 	private void capture(ArrayList<Cell> captured, int capturer) {
 		if(DEBUG)
 			System.out.println("We are capturing");
@@ -190,13 +232,26 @@ public class Board implements Piece {
 	}
 
 
+	/**
+	 *
+	 * @return An array containing the score for each player.
+	 */
     public int[] getScore(){
         return score;
     }
 
+
+	/**
+	 *
+	 * @return The size of the game board.
+	 */
     public int getSize(){return size;}
 
-    //create a new deep copy board
+
+	/**
+	 * Creates a deep copy of the current board.
+	 * @return A replica of this board.
+	 */
     public Board clone() {
         Board b = new Board(this.getSize());
 
@@ -208,6 +263,12 @@ public class Board implements Piece {
         return b;
     }
 
+
+	/**
+	 * Creates a deep copy of a one dimensional array
+	 * @param original The arra to be copied.
+	 * @return A copy of the array.
+	 */
     public static int[] deepCopyArray(int[] original){
         if(original == null){
             return null;
@@ -215,7 +276,13 @@ public class Board implements Piece {
         return Arrays.copyOf(original, original.length);
     }
 
-    // @Rorick code from stack over flow question /1564832
+	/**
+	 * @Rorick code from stack over flow question /1564832
+	 * Creates a deep copy of a two dimensional array
+	 * @param original The array to be copied.
+	 * @return A copy of the array.
+	 */
+    //
     public static int[][] deepCopyArrayD(int[][] original){
         if(original == null){
             return null;
@@ -229,7 +296,9 @@ public class Board implements Piece {
     }
 
 
-
-
+	/**
+	 *
+	 * @return The player whose turn it is to make a move.
+	 */
     public int getCurrentPlayer(){return currentPlayer;}
 }
