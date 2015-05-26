@@ -1,3 +1,0 @@
-After 400 runs - Wins: 391, losses: 0, draws: 9
-Average scores White: 3.705000, Black 0.027500
-Average time running: 3.447545

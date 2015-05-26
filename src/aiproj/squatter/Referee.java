@@ -25,7 +25,7 @@ public class Referee implements Piece{
      */
     public static void main(String[] args)
     {
-        int runTime= 200;
+        int runTime= 500;
         int wins   = 0;
         int losses = 0;
         int draws  = 0;

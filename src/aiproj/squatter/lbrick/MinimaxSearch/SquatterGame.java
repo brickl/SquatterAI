@@ -165,8 +165,8 @@ public class SquatterGame implements Piece, Game<Board,Move,Integer> {
 
         int utilityValue = 0;
 //        utilityValue += weightCorners(b, p);
-//        utilityValue += checkConnections(b, p);
-//        utilityValue += checkStrings(b, p);
+        utilityValue += checkConnections(b, p);
+        utilityValue += checkStrings(b, p);
 
         if(p == BLACK) {
             utilityValue += b.getScore()[BLACK]*BLACKWEIGHT;
