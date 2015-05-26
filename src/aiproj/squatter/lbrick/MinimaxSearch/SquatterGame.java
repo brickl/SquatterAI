@@ -118,7 +118,7 @@ public class SquatterGame implements Piece, Game<Board,Move,Integer> {
 
         try{
             //diagonal to the upper right
-            if((square = b.gameBoard[m.Row-1][m.Col+1]) == currentPlayer ){
+            if((square = b.gameBoard[m.Row-1][m.Col+1]) == currentPlayer ){//|| square == opponent){
                 calculatedValue +=1;
             }
         }catch(ArrayIndexOutOfBoundsException e){
@@ -127,7 +127,7 @@ public class SquatterGame implements Piece, Game<Board,Move,Integer> {
 
         try{
             //to the right bottom diagonal
-            if((square = b.gameBoard[m.Row+1][m.Col+1]) == currentPlayer ){
+            if((square = b.gameBoard[m.Row+1][m.Col+1]) == currentPlayer ){//|| square == opponent){
                 calculatedValue +=1;
             }
         }catch(ArrayIndexOutOfBoundsException e) {
@@ -135,7 +135,7 @@ public class SquatterGame implements Piece, Game<Board,Move,Integer> {
         }
         try{
             //to left bottom diagonal
-            if( (square = b.gameBoard[m.Row+1][m.Col-1]) == currentPlayer ){
+            if( (square = b.gameBoard[m.Row+1][m.Col-1]) == currentPlayer ){//|| square == opponent){
                 calculatedValue +=1;
             }
         }catch(ArrayIndexOutOfBoundsException e) {
@@ -143,8 +143,7 @@ public class SquatterGame implements Piece, Game<Board,Move,Integer> {
         }
         try{
             //to left upper diagonal
-            if((square =b.gameBoard[m.Row-1][m.Col-1]) == b.getCurrentPlayer()){
-                //System.out.printf("%d", b.gameBoard[m.Row-1][m.Col-1]);
+            if((square =b.gameBoard[m.Row-1][m.Col-1]) == currentPlayer ){//|| square == opponent){
                 calculatedValue +=1;
             }
         }
@@ -165,9 +164,9 @@ public class SquatterGame implements Piece, Game<Board,Move,Integer> {
     public int getUtility(Board b, Integer p){
 
         int utilityValue = 0;
-        //utilityValue += weightCorners(b, p);
-        //utilityValue += checkConnections(b, p);
-        //utilityValue += checkStrings(b, p);
+//        utilityValue += weightCorners(b, p);
+//        utilityValue += checkConnections(b, p);
+//        utilityValue += checkStrings(b, p);
 
         if(p == BLACK) {
             utilityValue += b.getScore()[BLACK]*BLACKWEIGHT;
