@@ -174,7 +174,7 @@ public class SquatterGame implements Piece, Game<Board,Move,Integer> {
             utilityValue -= b.getScore()[WHITE]*WHITEWEIGHT;
         } else if (p==WHITE) {
             utilityValue += b.getScore()[WHITE]*WHITEWEIGHT;
-            utilityValue += b.getScore()[BLACK]*BLACKWEIGHT;
+            utilityValue -= b.getScore()[BLACK]*BLACKWEIGHT;
         }
 
         // if the winner is us. or not us
