@@ -184,10 +184,11 @@ public class SquatterGame implements Piece, Game<Board,Move,Integer> {
     //no idea on a good function.. soo we need to adjust
     public int getUtility(Board b, Integer p){
 
-        int utilityValue = weight_corners(b, p);
+        int utilityValue=0;// = weight_corners(b, p);
         utilityValue += check_connections(b, p);
 
         utilityValue += b.getScore()[p]*100;
+
         //i have seen this work 2 moves ahead
         if( p == WHITE){
             utilityValue -= b.getScore()[BLACK]*100;
