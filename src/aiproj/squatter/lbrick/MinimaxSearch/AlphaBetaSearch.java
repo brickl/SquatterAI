@@ -54,7 +54,7 @@ public class AlphaBetaSearch<STATE, ACTION, PLAYER>{
     /** Creates a new search object for a given game. */
     public static <STATE, ACTION, PLAYER> AlphaBetaSearch<STATE, ACTION, PLAYER> createFor(
             Game<STATE, ACTION, PLAYER> game) {
-        return new AlphaBetaSearch<STATE, ACTION, PLAYER>(game);
+        return new AlphaBetaSearch<>(game);
     }
 
     public AlphaBetaSearch(Game<STATE, ACTION, PLAYER> game) {
