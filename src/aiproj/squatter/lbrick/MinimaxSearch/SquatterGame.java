@@ -7,8 +7,9 @@ import aiproj.squatter.Player;
 import aiproj.squatter.Referee;
 import aiproj.squatter.lbrick.Board;
 import aiproj.squatter.lbrick.lbrick;
-import java.util.ArrayList;
-import java.util.List;
+
+
+import java.util.*;
 
 
 /**
@@ -46,36 +47,126 @@ public class SquatterGame implements Piece, Game<Board,Move,Integer> {
         return board;
     }
 
+
+
     //returns all possible moves based on board;
+    //Return in Descending order based on weighting
     public Move[] getActions(Board b){
         int[][] board;
         int size = b.getSize();
+        int value; //Value that determines it order in the actions list - higher rating = more usefull
         board = b.gameBoard;
-
-        List<Move> movesList = new ArrayList<>();
+        //hashmap to store all values
+        HashMap<Move, Integer> map = new HashMap<Move, Integer>();
+        //compartor used to sort the values
+        MyComparator bvc = new MyComparator(map);
+        //treemap used to store sorted values
+        TreeMap<Move, Integer> sorted_map = new TreeMap<Move, Integer>(bvc);
 
         Move move;
         for(int column=0; column < size; column++)
         {
+            //if a piece is EMPTY then we can move there
             for(int row=0; row < size; row++)
-            {
-                //if a piece is EMPTY then we can move there
-                if(board[row][column] == EMPTY)
-                {
+                if (board[row][column] == EMPTY) {
                     move = new Move();
                     move.Row = row;
                     move.Col = column;
                     move.P = b.getCurrentPlayer();
-                    //then we add move to moves
-                    movesList.add(move);
-                    //System.out.printf("\nmove col: %d, row %d", column, row);
+                    //need a function that will return its given value
+                    value = calcValue(b, move);
+                    map.put(move, value);
                 }
+        }
+
+        //Need array for API
+        Move[] moves = new Move[map.size()]; int i=0;
+        //puts data through to comparator
+        sorted_map.putAll(map);
+        //move data to array
+        for(Move m : sorted_map.keySet()){
+            moves[i++] = m;
+        }
+
+        return moves;
+    }
+
+
+
+
+    //Calculates a value based on neighbouring nodes - only checks for the current players nodes
+    private int calcValue(Board b, Move m){
+        int calculatedValue=-1;
+        //we want to look at all neighbouring cells
+
+        try{
+            //above
+            if(b.gameBoard[m.Row-1][m.Col] == b.getCurrentPlayer()){
+                calculatedValue +=1;
+            }
+        }catch(ArrayIndexOutOfBoundsException e){
+            //
+        }
+        try{
+            //diagonal to the upper right
+            if(b.gameBoard[m.Row-1][m.Col+1] == b.getCurrentPlayer()){
+                calculatedValue +=1;
+            }
+        }catch(ArrayIndexOutOfBoundsException e){
+            //
+        }
+        try{
+            //to the right
+            if(b.gameBoard[m.Row][m.Col+1] == b.getCurrentPlayer()){
+                calculatedValue +=1;
+            }
+        }catch(ArrayIndexOutOfBoundsException e){
+            //
+        }
+        try{
+            //to the right bottom diagonal
+            if(b.gameBoard[m.Row+1][m.Col+1] == b.getCurrentPlayer()){
+                calculatedValue +=1;
+            }
+        }catch(ArrayIndexOutOfBoundsException e){
+            //
+        }
+        try{
+            //below it
+            if(b.gameBoard[m.Row+1][m.Col] == b.getCurrentPlayer()){
+                calculatedValue +=1;
+            }
+        }catch(ArrayIndexOutOfBoundsException e){
+            //
+        }
+        try{
+            //to left bottom diagonal
+            if(b.gameBoard[m.Row+1][m.Col-1] == b.getCurrentPlayer()){
+                calculatedValue +=1;
+            }
+        }catch(ArrayIndexOutOfBoundsException e){
+            //
+        }
+        try{
+            //to left
+            if(b.gameBoard[m.Row][m.Col-1] == b.getCurrentPlayer()){
+                calculatedValue +=1;
+            }
+        }catch(ArrayIndexOutOfBoundsException e){
+            //
+        }
+        try{
+            //to left upper diagonal
+            if(b.gameBoard[m.Row-1][m.Col-1] == b.getCurrentPlayer()){
+                //System.out.printf("%d", b.gameBoard[m.Row-1][m.Col-1]);
+                calculatedValue +=1;
             }
         }
-        //converts our ArrayList into our handy Move[] that is required for API
-        Move[] moves = new Move[movesList.size()];
-        moves = movesList.toArray(moves);
-        return moves;
+        catch(ArrayIndexOutOfBoundsException e){
+            //
+        }
+
+        return calculatedValue;
     }
 
 
