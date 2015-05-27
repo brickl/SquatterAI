@@ -80,6 +80,7 @@ public class SquatterGame implements Piece, Game<Board,Move,Integer> {
                     move.P = b.getCurrentPlayer();
                     //need a function that will return its given value
                     value = calcValue(b, move);
+                    //value = 1;
                     map.put(move, value);
                 }
         }
@@ -118,7 +119,7 @@ public class SquatterGame implements Piece, Game<Board,Move,Integer> {
 
         try{
             //diagonal to the upper right
-            if((square = b.gameBoard[m.Row-1][m.Col+1]) == currentPlayer || square == opponent ){
+            if((square = b.gameBoard[m.Row-1][m.Col+1]) == currentPlayer ){//|| square == opponent){
                 calculatedValue +=1;
             }
         }catch(ArrayIndexOutOfBoundsException e){
@@ -127,7 +128,7 @@ public class SquatterGame implements Piece, Game<Board,Move,Integer> {
 
         try{
             //to the right bottom diagonal
-            if((square = b.gameBoard[m.Row+1][m.Col+1]) == currentPlayer || square == opponent){
+            if((square = b.gameBoard[m.Row+1][m.Col+1]) == currentPlayer ){//|| square == opponent){
                 calculatedValue +=1;
             }
         }catch(ArrayIndexOutOfBoundsException e) {
@@ -135,7 +136,7 @@ public class SquatterGame implements Piece, Game<Board,Move,Integer> {
         }
         try{
             //to left bottom diagonal
-            if( (square = b.gameBoard[m.Row+1][m.Col-1]) == currentPlayer || square == opponent){
+            if( (square = b.gameBoard[m.Row+1][m.Col-1]) == currentPlayer ){//|| square == opponent){
                 calculatedValue +=1;
             }
         }catch(ArrayIndexOutOfBoundsException e) {
@@ -143,8 +144,7 @@ public class SquatterGame implements Piece, Game<Board,Move,Integer> {
         }
         try{
             //to left upper diagonal
-            if((square =b.gameBoard[m.Row-1][m.Col-1]) == b.getCurrentPlayer() || square == opponent){
-                //System.out.printf("%d", b.gameBoard[m.Row-1][m.Col-1]);
+            if((square =b.gameBoard[m.Row-1][m.Col-1]) == currentPlayer ){//|| square == opponent){
                 calculatedValue +=1;
             }
         }
@@ -166,15 +166,15 @@ public class SquatterGame implements Piece, Game<Board,Move,Integer> {
 
         int utilityValue = 0;
         utilityValue += weightCorners(b, p);
-        //utilityValue += checkConnections(b, p);
+//        utilityValue += checkConnections(b, p);
         utilityValue += checkStrings(b, p);
 
         if(p == BLACK) {
             utilityValue += b.getScore()[BLACK]*BLACKWEIGHT;
             utilityValue -= b.getScore()[WHITE]*WHITEWEIGHT;
         } else if (p==WHITE) {
-            utilityValue += b.getScore()[WHITE]*WHITEWEIGHT;
-            utilityValue -= b.getScore()[BLACK]*BLACKWEIGHT;
+            utilityValue += b.getScore()[WHITE]*BLACKWEIGHT;
+            utilityValue -= b.getScore()[BLACK]*WHITEWEIGHT;
         }
 
         // if the winner is us. or not us
@@ -184,7 +184,7 @@ public class SquatterGame implements Piece, Game<Board,Move,Integer> {
             /* The other player has won */
             utilityValue -= WINWEIGHT;
         }
-        if(b.gameBoard[4][1] == p) System.out.println("Utility = " + utilityValue);
+        //if(b.gameBoard[4][1] == p) System.out.println("Utility = " + utilityValue);
         return utilityValue;
     }
 
@@ -198,32 +198,32 @@ public class SquatterGame implements Piece, Game<Board,Move,Integer> {
     private int weightCorners(Board b, int p) {
         int utilityValue = 0;
         /* Add value if cells next to corners are filled */
-        if (b.gameBoard[0][1] == p){
-            utilityValue+=CORNERWEIGHT;
-        }
-        if (b.gameBoard[1][0] == p){
-            utilityValue+=CORNERWEIGHT;
-        }
-        if (b.gameBoard[0][b.getSize()-2] == p){
-            utilityValue+=CORNERWEIGHT;
-        }
-        if (b.gameBoard[1][b.getSize()-1] == p){
-            utilityValue+=CORNERWEIGHT;
-        }
-        if (b.gameBoard[b.getSize()-2][b.getSize()-1] == p){
-            utilityValue+=CORNERWEIGHT;
-        }
-        if (b.gameBoard[b.getSize()-1][b.getSize()-2] == p){
-            utilityValue+=CORNERWEIGHT;
-        }
+//        if (b.gameBoard[0][1] == p){
+//            utilityValue+=CORNERWEIGHT;
+//        }
+//        if (b.gameBoard[1][0] == p){
+//            utilityValue+=CORNERWEIGHT;
+//        }
+//        if (b.gameBoard[0][b.getSize()-2] == p){
+//            utilityValue+=CORNERWEIGHT;
+//        }
+//        if (b.gameBoard[1][b.getSize()-1] == p){
+//            utilityValue+=CORNERWEIGHT;
+//        }
+//        if (b.gameBoard[b.getSize()-2][b.getSize()-1] == p){
+//            utilityValue+=CORNERWEIGHT;
+//        }
+//        if (b.gameBoard[b.getSize()-1][b.getSize()-2] == p){
+//            utilityValue+=CORNERWEIGHT;
+//        }
 
         /* Reduce value if corners are filled */
         if (b.gameBoard[b.getSize()-1][b.getSize()-1] == p) {
-            utilityValue -= 20;
+            utilityValue -= CORNERDEDUCTION;
         } if (b.gameBoard[b.getSize()-1][0] == p) {
-            utilityValue -= 20;
+            utilityValue -= CORNERDEDUCTION;
         } if (b.gameBoard[0][b.getSize()-1] == p) {
-            utilityValue -= 20;
+            utilityValue -= CORNERDEDUCTION;
         } if (b.gameBoard[0][0] == p) {
             utilityValue -= CORNERDEDUCTION;
         }
