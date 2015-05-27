@@ -15,7 +15,8 @@ public class lbrick implements Player, Piece {
 	SquatterGame game;
 	int playerPiece, opponentPiece, moveCount;
 	boolean invalidMove;
-
+    int ai_threshold=3;
+    AlphaBetaSearch gameEngine;
 
 	/**
 	 * Initializes a player for a new game.
@@ -30,7 +31,18 @@ public class lbrick implements Player, Piece {
 
 		if((board = new Board(size)) != null && (lastOppMove = new Move()) != null && (game = new SquatterGame()) != null) {
 			playerPiece = piece;
-			if(piece == WHITE) {
+            //if board size 6 make 2 defualt moves
+            if (size == 6){
+                this.ai_threshold = 2;
+                gameEngine = new AlphaBetaSearch<Board,Move,Integer>(game);
+                gameEngine.setDepth(4);
+            }else if(size == 7){
+                this.ai_threshold = 2;
+                gameEngine = new AlphaBetaSearch<Board,Move,Integer>(game);
+                gameEngine.setDepth(3);
+            }
+
+            if(piece == WHITE) {
 				opponentPiece = BLACK;
 			} else {
 				opponentPiece = WHITE;
@@ -51,13 +63,17 @@ public class lbrick implements Player, Piece {
         Move m2= new Move();
 
         //if we don't want this to go into min-max straight away
-        if(moveCount >= 2)
+        if(moveCount >= ai_threshold)
         {
-			AlphaBetaSearch engine = new AlphaBetaSearch<Board,Move,Integer>(game);
+
             Board b = board.clone();
             //search the board but a copy of the one we have
             //m = (Move)mms.makeDecision(b);
-			m = (Move)engine.makeDecision(b);
+			m = (Move)this.gameEngine.makeDecision(b);
+
+            if(moveCount % 6 == 0){
+                gameEngine.setDepth( gameEngine.getDepth()+1);
+            }
         }
         else {
 //           what we can do instead of minmax for early turns?

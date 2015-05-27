@@ -80,6 +80,7 @@ public class SquatterGame implements Piece, Game<Board,Move,Integer> {
                     move.P = b.getCurrentPlayer();
                     //need a function that will return its given value
                     value = calcValue(b, move);
+                    //value = 1;
                     map.put(move, value);
                 }
         }
@@ -165,8 +166,8 @@ public class SquatterGame implements Piece, Game<Board,Move,Integer> {
 
         int utilityValue = 0;
 //        utilityValue += weightCorners(b, p);
-        utilityValue += checkConnections(b, p);
-        utilityValue += checkStrings(b, p);
+//        utilityValue += checkConnections(b, p);
+//        utilityValue += checkStrings(b, p);
 
         if(p == BLACK) {
             utilityValue += b.getScore()[BLACK]*BLACKWEIGHT;
@@ -197,32 +198,32 @@ public class SquatterGame implements Piece, Game<Board,Move,Integer> {
     private int weightCorners(Board b, int p) {
         int utilityValue = 0;
         /* Add value if cells next to corners are filled */
-        if (b.gameBoard[0][1] == p){
-            utilityValue+=CORNERWEIGHT;
-        }
-        if (b.gameBoard[1][0] == p){
-            utilityValue+=CORNERWEIGHT;
-        }
-        if (b.gameBoard[0][b.getSize()-2] == p){
-            utilityValue+=CORNERWEIGHT;
-        }
-        if (b.gameBoard[1][b.getSize()-1] == p){
-            utilityValue+=CORNERWEIGHT;
-        }
-        if (b.gameBoard[b.getSize()-2][b.getSize()-1] == p){
-            utilityValue+=CORNERWEIGHT;
-        }
-        if (b.gameBoard[b.getSize()-1][b.getSize()-2] == p){
-            utilityValue+=CORNERWEIGHT;
-        }
+//        if (b.gameBoard[0][1] == p){
+//            utilityValue+=CORNERWEIGHT;
+//        }
+//        if (b.gameBoard[1][0] == p){
+//            utilityValue+=CORNERWEIGHT;
+//        }
+//        if (b.gameBoard[0][b.getSize()-2] == p){
+//            utilityValue+=CORNERWEIGHT;
+//        }
+//        if (b.gameBoard[1][b.getSize()-1] == p){
+//            utilityValue+=CORNERWEIGHT;
+//        }
+//        if (b.gameBoard[b.getSize()-2][b.getSize()-1] == p){
+//            utilityValue+=CORNERWEIGHT;
+//        }
+//        if (b.gameBoard[b.getSize()-1][b.getSize()-2] == p){
+//            utilityValue+=CORNERWEIGHT;
+//        }
 
         /* Reduce value if corners are filled */
         if (b.gameBoard[b.getSize()-1][b.getSize()-1] == p) {
-            utilityValue -= 20;
+            utilityValue -= CORNERDEDUCTION;
         } if (b.gameBoard[b.getSize()-1][0] == p) {
-            utilityValue -= 20;
+            utilityValue -= CORNERDEDUCTION;
         } if (b.gameBoard[0][b.getSize()-1] == p) {
-            utilityValue -= 20;
+            utilityValue -= CORNERDEDUCTION;
         } if (b.gameBoard[0][0] == p) {
             utilityValue -= CORNERDEDUCTION;
         }
