@@ -8,11 +8,11 @@ import java.io.PrintStream;
 
 public class User implements Player, Piece {
 
-    Board board;
-    int playerPiece, opponentPiece;
-    Move lastOppMove;
-    boolean invalidMove;
-    Scanner reader;
+    private Board board;
+    private int playerPiece, opponentPiece;
+    private Move lastOppMove;
+    private boolean invalidMove;
+    private Scanner reader;
 
 
     public int init(int n, int p) {
@@ -48,13 +48,6 @@ public class User implements Player, Piece {
             m.Col = reader.nextInt();
         }
 
-//        m.Row = rn.nextInt(board.size);
-//        m.Col = rn.nextInt(board.size);
-//
-//        while(!board.isValid(m)) {
-//            m.Row = rn.nextInt(board.size);
-//            m.Col = rn.nextInt(board.size);
-//        }
         board.recordMove(m);
         return m;
     }

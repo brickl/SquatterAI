@@ -64,7 +64,7 @@ public class SquatterGame implements Piece, Game<Board,Move,Integer> {
         //hashmap to store all values
         HashMap<Move, Integer> map = new HashMap<Move, Integer>();
         //comparator used to sort the values
-        MyComparator bvc = new MyComparator(map);
+        MoveComparator bvc = new MoveComparator(map);
         //treemap used to store sorted values
         TreeMap<Move, Integer> sorted_map = new TreeMap<Move, Integer>(bvc);
 
@@ -216,7 +216,12 @@ public class SquatterGame implements Piece, Game<Board,Move,Integer> {
         return utilityValue;
     }
 
-
+    /***
+     * Assigns values to having pieces in "strings" - three nodes next to each other
+     * @param b board configuration
+     * @param p The current player
+     * @return
+     */
 
     private int checkStrings(Board b, int p) {
         int row, col, utility = 0;

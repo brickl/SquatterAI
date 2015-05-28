@@ -8,10 +8,10 @@ import java.util.Map;
  */
 
 //This comparator will create a descending keyset - change the comparison if you want ascending
-public class MyComparator implements Comparator{
+public class MoveComparator implements Comparator{
     Map map;
 
-    public MyComparator(Map map){
+    public MoveComparator(Map map){
         this.map = map;
     }
 

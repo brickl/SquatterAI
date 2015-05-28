@@ -10,14 +10,15 @@ import java.io.PrintStream;
 
 public class lbrick implements Player, Piece {
 	
-	Board board;
-	Move lastOppMove;
-	SquatterGame game;
-	int playerPiece, opponentPiece, moveCount;
-	boolean invalidMove;
-    int default_moves =3;
-    AlphaBetaSearch gameEngine;
-	int depth_step = 8;
+	private Board board;
+	private Move lastOppMove;
+	private SquatterGame game;
+	private int playerPiece, opponentPiece, moveCount;
+	private boolean invalidMove;
+    	private AlphaBetaSearch gameEngine;
+	//Default set up for a board not size 6 or 7
+	private int depth_step = 8;
+	private int default_moves =3;
 
 	/**
 	 * Initializes a player for a new game.
@@ -74,9 +75,7 @@ public class lbrick implements Player, Piece {
             //m = (Move)mms.makeDecision(b);
 			m = (Move)this.gameEngine.makeDecision(b);
 
-            if(moveCount % depth_step == 0){
-                gameEngine.setDepth( gameEngine.getDepth()+1);
-            }
+            
         }
         else {
 //           what we can do instead of minmax for early turns?
@@ -113,10 +112,7 @@ public class lbrick implements Player, Piece {
 				}
 			}
 		}
-
-
-
-
+		//increase move counter, & record peice move
         moveCount++;
         m.P = playerPiece;
 		board.recordMove(m);
@@ -162,22 +158,8 @@ public class lbrick implements Player, Piece {
 	 */
 	public void printBoard(PrintStream output) { board.print(output); }
 
-
-	/**
-	 *
-	 * @return The piece being used by this player.
+	/***
+	 * @return the array of board scores
 	 */
-    public int getPlayerPiece(){
-        return playerPiece;
-    }
-
-
-	/**
-	 *
-	 * @return The piece being used by this player's opponent.
-	 */
-    public int getOpponentPiece(){return opponentPiece;}
-
-
     public int[] getScore(){return board.getScore();}
 }
