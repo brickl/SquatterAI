@@ -15,17 +15,37 @@ public class lbrick implements Player, Piece {
 	SquatterGame game;
 	int playerPiece, opponentPiece, moveCount;
 	boolean invalidMove;
+    int default_moves =3;
+    AlphaBetaSearch gameEngine;
+	int depth_step = 8;
 
-
-
-	public int init(int size, int p) {
+	/**
+	 * Initializes a player for a new game.
+	 * @param size The size of the game board to be used.
+	 * @param piece The piece to be used by this player
+	 * @return 0 if the player is successfully initialized, -1 if not.
+	 */
+	public int init(int size, int piece) {
 		moveCount = 0;
 		invalidMove = false;
 
 
 		if((board = new Board(size)) != null && (lastOppMove = new Move()) != null && (game = new SquatterGame()) != null) {
-			playerPiece = p;
-			if(p == WHITE) {
+			playerPiece = piece;
+            //if board size 6 make 2 defualt moves
+            if (size == 6){
+                this.default_moves = 2;
+                gameEngine = new AlphaBetaSearch<Board,Move,Integer>(game);
+                gameEngine.setDepth(4);
+				this.depth_step = 7;
+            }else if(size == 7){
+                this.default_moves = 2;
+                gameEngine = new AlphaBetaSearch<Board,Move,Integer>(game);
+                gameEngine.setDepth(3);
+				this.depth_step = 8;
+            }
+
+            if(piece == WHITE) {
 				opponentPiece = BLACK;
 			} else {
 				opponentPiece = WHITE;
@@ -34,20 +54,29 @@ public class lbrick implements Player, Piece {
 		}
 		return -1;
 	}
-	
+
+
+	/**
+	 * Instructs the player to make a move.
+	 * @return The move chosen by the player.
+	 */
 	public Move makeMove() {
 
 		Move m = new Move();
         Move m2= new Move();
 
         //if we don't want this to go into min-max straight away
-        if(this.moveCount >= 2)
+        if(moveCount >= default_moves)
         {
-			AlphaBetaSearch engine = new AlphaBetaSearch<>(game);
+
             Board b = board.clone();
             //search the board but a copy of the one we have
             //m = (Move)mms.makeDecision(b);
-			m = (Move)engine.makeDecision(b);
+			m = (Move)this.gameEngine.makeDecision(b);
+
+            if(moveCount % depth_step == 0){
+                gameEngine.setDepth( gameEngine.getDepth()+1);
+            }
         }
         else {
 //           what we can do instead of minmax for early turns?
@@ -94,7 +123,13 @@ public class lbrick implements Player, Piece {
 
 		return m;
 	}
-	
+
+
+	/**
+	 * Informs the player of the move made by its opponent
+	 * @param m The opponent's move.
+	 * @return 0 if the move is valid, INVALID (=-1) if the move is invalid.
+	 */
 	public int opponentMove(Move m) {
 		if(board.isValid(m)) {
 			board.recordMove(m);
@@ -104,20 +139,45 @@ public class lbrick implements Player, Piece {
 			return INVALID;
 		}
 	}
-	
+
+
+	/**
+	 * Checks to see if the game is over, and whether there is a winner.
+	 * @return INVALID if the opponent has made an illegal move, EMPTY if the game is still going, DEAD if the game is a
+	 * draw.  If the game is over, returns the colour of the winning player.
+	 */
 	public int getWinner() {
 		if(invalidMove) {
 			return INVALID;
 		}
 		else {
-			return board.testWin();
+			return board.checkState();
 		}
 	}
-	
+
+
+	/**
+	 * Prints the current board configuration.
+	 * @param output The printstream to be used for output.
+	 */
 	public void printBoard(PrintStream output) { board.print(output); }
 
+
+	/**
+	 *
+	 * @return The piece being used by this player.
+	 */
     public int getPlayerPiece(){
         return playerPiece;
     }
+
+
+	/**
+	 *
+	 * @return The piece being used by this player's opponent.
+	 */
     public int getOpponentPiece(){return opponentPiece;}
+
+
+    public int[] getScore(){return board.getScore();}
 }

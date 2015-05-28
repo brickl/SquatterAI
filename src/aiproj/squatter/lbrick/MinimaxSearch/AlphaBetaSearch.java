@@ -49,12 +49,12 @@ public class AlphaBetaSearch<STATE, ACTION, PLAYER>{
 
     Game<STATE, ACTION, PLAYER> game;
     private int expandedNodes;
-    private static final int DEPTH = 4;
+    private int depth = 4;
 
     /** Creates a new search object for a given game. */
     public static <STATE, ACTION, PLAYER> AlphaBetaSearch<STATE, ACTION, PLAYER> createFor(
             Game<STATE, ACTION, PLAYER> game) {
-        return new AlphaBetaSearch<STATE, ACTION, PLAYER>(game);
+        return new AlphaBetaSearch<>(game);
     }
 
     public AlphaBetaSearch(Game<STATE, ACTION, PLAYER> game) {
@@ -70,7 +70,7 @@ public class AlphaBetaSearch<STATE, ACTION, PLAYER>{
         for (ACTION action : game.getActions(state)) {
             STATE newState = game.cloneState(state);
             double value = minValue(game.getResult(newState, action), player,
-                    Double.NEGATIVE_INFINITY, Double.POSITIVE_INFINITY, DEPTH);
+                    Double.NEGATIVE_INFINITY, Double.POSITIVE_INFINITY, this.depth);
             if (value > resultValue) {
                 result = action;
                 resultValue = value;
@@ -110,6 +110,10 @@ public class AlphaBetaSearch<STATE, ACTION, PLAYER>{
         }
         return value;
     }
+
+    public int getDepth(){return this.depth;}
+
+    public void setDepth(int d){this.depth = d;}
 
 
 }
