@@ -61,7 +61,11 @@ public class AlphaBetaSearch<STATE, ACTION, PLAYER>{
         this.game = game;
     }
 
-
+    /***
+     * Find's the best decision based, on the utility function & depth
+     * @param state
+     * @return ACTION
+     */
     public ACTION makeDecision(STATE state) {
         expandedNodes = 0;
         ACTION result = null;
@@ -79,6 +83,15 @@ public class AlphaBetaSearch<STATE, ACTION, PLAYER>{
         return result;
     }
 
+    /***
+     * Along with minValue, maxValue will return the maxium value for a given starting state
+     * @param state
+     * @param player
+     * @param alpha
+     * @param beta
+     * @param depth_level
+     * @return
+     */
     public double maxValue(STATE state, PLAYER player, double alpha, double beta,Integer depth_level) {
         expandedNodes++;
         if (game.isTerminal(state) || depth_level == 0)
@@ -95,6 +108,15 @@ public class AlphaBetaSearch<STATE, ACTION, PLAYER>{
         return value;
     }
 
+    /***
+     * Along with maxValue, minValue will return the minimum value for a given starting state
+     * @param state
+     * @param player
+     * @param alpha
+     * @param beta
+     * @param depth_level
+     * @return
+     */
     public double minValue(STATE state, PLAYER player, double alpha, double beta,Integer depth_level) {
         expandedNodes++;
         if (game.isTerminal(state) || depth_level == 0)
@@ -111,8 +133,16 @@ public class AlphaBetaSearch<STATE, ACTION, PLAYER>{
         return value;
     }
 
+    /***
+     * Returns the current depth set for the search engine
+     * @return depth: int
+     */
     public int getDepth(){return this.depth;}
 
+    /***
+     * Sets current depth for the search engine
+     * @param d depth:int
+     */
     public void setDepth(int d){this.depth = d;}
 
 

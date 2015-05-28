@@ -11,11 +11,11 @@ import aiproj.squatter.Piece;
  * Created by lochiebrick on 25/05/2015.
  */
 public class Random implements Player, Piece {
-    Board board;
-    int playerPiece, opponentPiece;
-    Move lastOppMove;
-    boolean invalidMove;
-    Scanner reader;
+    private Board board;
+    private int playerPiece, opponentPiece;
+    private Move lastOppMove;
+    private boolean invalidMove;
+    private Scanner reader;
 
 
     public int init(int n, int p) {
