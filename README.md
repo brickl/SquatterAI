@@ -1,4 +1,0 @@
-# SquatterAI
-AI Project
-
-

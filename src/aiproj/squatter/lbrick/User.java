@@ -75,9 +75,11 @@ public class User implements Player, Piece {
             return INVALID;
         }
         else {
-            return board.testWin();
+            return board.checkState();
         }
     }
 
     public void printBoard(PrintStream output) { board.print(output); }
+
+    public int[] getScore(){int[] a={}; return a;}
 }
