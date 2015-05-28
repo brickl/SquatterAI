@@ -2,7 +2,10 @@ package aiproj.squatter.lbrick;
 
 /**
  * Created by lochiebrick on 16/05/2015.
+ * Lochlan Brick lbrick 638126
+ * Nathan Malishev nmalishev 637410
  */
+
 public class Cell {
     int row;
     int col;
@@ -12,6 +15,11 @@ public class Cell {
         col = c;
     }
 
+    /**
+     * Checks to see if two cells are the same
+     * @param other Another cell
+     * @return true if the cells are equal, false if not
+     */
     public boolean equals(Object other) {
 
         if(!(other instanceof Cell))

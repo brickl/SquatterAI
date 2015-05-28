@@ -44,6 +44,11 @@ import aiproj.squatter.Player;
  *            Type which is used for actions in the game.
  * @param <PLAYER>
  *            Type which is used for players in the game.
+ *
+ *
+ * Edited by Lochlan Brick, Nathan Malishev 28/05/2015
+ * lbrick 638126
+ * nmalishev 637410
  */
 public class AlphaBetaSearch<STATE, ACTION, PLAYER>{
 

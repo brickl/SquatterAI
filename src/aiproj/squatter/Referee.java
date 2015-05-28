@@ -4,11 +4,12 @@ package aiproj.squatter;
  *   Referee:
  *      A mediator between two players. It is responsible to initialize 
  *      the players and pass the plays between them and terminates the game. 
- *      It is the responsibility of the players to check whether they have won and
- *      maintain the board state.
+ *      It is the responsibility of the players to check whether they have won
+ *      and maintain the board state.
  *
  *   @author lrashidi
  */
+
 
 
 public class Referee implements Piece{
@@ -19,16 +20,16 @@ public class Referee implements Piece{
 
 
     /*
-     * Input arguments: first board size, second path of player1 and third path of player2
+     * Input arguments: first board size, second path of player1 and third path
+     * of player2
      */
     public static void main(String[] args)
     {
         lastPlayedMove = new Move();
         int NumberofMoves = 0;
         int boardEmptyPieces=Integer.valueOf(args[0])*Integer.valueOf(args[0]);
-        int gBoardEmptyPieces=Integer.valueOf(args[0])*Integer.valueOf(args[0]);
-
         System.out.println("Referee started !");
+
         try{
             P1 = (Player)(Class.forName(args[1]).newInstance());
             P2 = (Player)(Class.forName(args[2]).newInstance());
@@ -42,12 +43,14 @@ public class Referee implements Piece{
         P2.init(Integer.valueOf(args[0]), BLACK);
 
 
-        while(boardEmptyPieces > 0 && P1.getWinner() == 0 && P2.getWinner() == 0)
+        while(boardEmptyPieces > 0 && P1.getWinner() == 0
+                && P2.getWinner() == 0)
         {
 
             NumberofMoves++;
             lastPlayedMove=P1.makeMove();
-            System.out.println("Placing to. "+lastPlayedMove.Row+":"+lastPlayedMove.Col+" by "+lastPlayedMove.P);
+            System.out.println("Placing to. "+lastPlayedMove.Row+":"+
+                    lastPlayedMove.Col+" by "+lastPlayedMove.P);
             P1.printBoard(System.out);
             boardEmptyPieces--;
 
@@ -55,7 +58,8 @@ public class Referee implements Piece{
 
             if(P2.opponentMove(lastPlayedMove)<0)
             {
-                System.out.println("Exception: Player 2 rejected the move of player 1.");
+                System.out.println("Exception: Player 2 rejected the move " +
+                        "of player 1.");
                 P1.printBoard(System.out);
                 P2.printBoard(System.out);
                 System.exit(1);
@@ -63,13 +67,15 @@ public class Referee implements Piece{
             else if(P2.getWinner()==0  && P1.getWinner()==0) {
                 NumberofMoves++;
                 lastPlayedMove = P2.makeMove();
-                System.out.println("Placing to. " + lastPlayedMove.Row + ":" + lastPlayedMove.Col + " by " + lastPlayedMove.P);
+                System.out.println("Placing to. " + lastPlayedMove.Row + ":"
+                        + lastPlayedMove.Col + " by " + lastPlayedMove.P);
                 boardEmptyPieces--;
 
                 P2.printBoard(System.out);
 
                 if (P1.opponentMove(lastPlayedMove) < 0) {
-                    System.out.println("Exception: Player 1 rejected the move of player 2.");
+                    System.out.println("Exception: Player 1 rejected the move "
+                            + "of player 2.");
                     P2.printBoard(System.out);
                     P1.printBoard(System.out);
                     System.exit(1);
@@ -83,9 +89,12 @@ public class Referee implements Piece{
         System.out.println("P1 Board is :");
         P1.printBoard(System.out);
 
-        System.out.println("Player one (White) indicate winner as: "+ P1.getWinner());
-        System.out.println("Player two (Black) indicate winner as: "+ P2.getWinner());
-        System.out.println("Total Number of Moves Played in the Game: "+ NumberofMoves);
+        System.out.println("Player one (White) indicate winner as: "
+                + P1.getWinner());
+        System.out.println("Player two (Black) indicate winner as: "
+                + P1.getWinner());
+        System.out.println("Total Number of Moves Played in the Game: "
+                + NumberofMoves);
         System.out.println("Referee Finished !");
     }
 

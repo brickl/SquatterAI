@@ -7,6 +7,11 @@ import java.util.Arrays;
 
 import aiproj.squatter.*;
 
+/**
+ * Created by Nathan on 20/05/15.
+ * Lochlan Brick lbrick 638126
+ * Nathan Malishev nmalishev 637410
+ */
 
 public class Board implements Piece {
 
@@ -121,13 +126,15 @@ public class Board implements Piece {
 
 	/**
 	 * Checks if the game if finished, and if so whether there is a winner.
-	 * @return EMPTY if the game is unfinished, DEAD if the game is drawn, BLACK if the black player has won or WHITE
+	 * @return EMPTY if the game is unfinished, DEAD if the game is drawn,
+	 * 	BLACK if the black player has won or WHITE
 	 * if the white player has won.
 	 */
 	public int checkState() {
 		int i, j;
 		if(PRINTSCORE)
-			System.out.println("Score: Black " + score[BLACK] + " vs White " + score[WHITE]);
+			System.out.println("Score: Black " + score[BLACK] + " vs White "
+					+ score[WHITE]);
 		for(i=0; i<size; i++) {
 			for(j=0; j<size; j++) {
 				if(gameBoard[i][j] == EMPTY) {
@@ -165,10 +172,12 @@ public class Board implements Piece {
 
 
 	/**
-	 * Uses a variation of the floodfill algorithm to check if the given row and column is part of a captured region.
+	 * Uses a variation of the floodfill algorithm to check if the given row
+	 * and column is part of a captured region.
 	 * @param row The row of the cell to be checked.
 	 * @param col The column of the cell to be checked.
-	 * @param boundary The colour of the pieces that will form the boundary of the region.
+	 * @param boundary The colour of the pieces that will form the boundary
+	 *                    of the region.
 	 */
 	private void floodFill(int row, int col, int boundary) {
 		ArrayList<Cell> captured = new ArrayList<>();
@@ -179,13 +188,15 @@ public class Board implements Piece {
 
 		queue.add(new Cell(row, col));
 		if(DEBUG)
-			System.out.println("Checking " + row + "," + col + ". Boundary = " + boundary);
+			System.out.println("Checking " + row + "," + col + ". Boundary = "
+					+ boundary);
 		while(!queue.isEmpty()) {
 			cell = queue.remove(0);
 			r = cell.row;
 			c = cell.col;
 
-			if((r == 0 || c == 0 || r == size-1 || c == size-1) && gameBoard[r][c] != boundary) {
+			if((r == 0 || c == 0 || r == size-1 || c == size-1)
+					&& gameBoard[r][c] != boundary) {
 				/* reached edge of board, no captured cells */
 				return;
 			} else if(gameBoard[r][c] != boundary) {
@@ -223,7 +234,8 @@ public class Board implements Piece {
 			if(gameBoard[caught.row][caught.col] < DEAD) {
 				gameBoard[caught.row][caught.col] += DEAD;
 
-				/* Only increase score if captured piece does not belong to the capturer */
+				/* Only increase score if captured piece does not belong to the
+				capturer */
 				if(gameBoard[caught.row][caught.col] != capturer) {
 					score[capturer] += 1;
 				}

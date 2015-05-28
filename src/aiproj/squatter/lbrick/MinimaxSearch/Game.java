@@ -6,7 +6,9 @@ import aiproj.squatter.lbrick.lbrick;
 import java.util.List;
 
 /**
- * Created by nathan on 20/05/15.
+ * Created by Nathan on 20/05/15.
+ * Lochlan Brick lbrick 638126
+ * Nathan Malishev nmalishev 637410
  */
 
 /* Interface required by AlphaBetaSearch */

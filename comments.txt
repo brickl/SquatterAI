@@ -1,11 +1,79 @@
+Lochlan Brick lbrick 638126
+Nathan Malishev nmalishev 637410
+COMP30024 Artificial Intelligence
+Project Part B - comments
 
-General Structure of the code
+CODE STRUCTURE
+Our code is structured into one package (aiproj.squatter.lbrick) and one sub-package (aiproj.squatter.lbrick.MinimaxSearch).
+Our player class (aiproj.squatter.lbrick.lbrick) conducts a minmax search.  The lbrick package contains a Board class and a Cell class, which are both used to record and manage possible game board configurations.  The Board class checks for captured pieces and also keeps track of the score and player whose turn it is to move for a given gae board configuration.
 
-Brick I'm not sure how much of the player/Squatter game you have changed
+The MinimaxSearch package is used by our player (aiproj.squatter.lbrick.lbrick) to plan it's moves.  The AlphaBetaSearch class implements the minmax algorithm (with alpha beta pruning), and the SquatterGame class implements the interface required by AlphaBetaSearch.  The SquatterGame class therefore provides functionality to check the utility of the game board and return all possible moves, amongst other things.  Note that the AlphaBetaSearch class was taken from the AIMA Core Library on gitHub (https://github.com/aima-java/aima-java), and edited slightly to allow for more control over the search depth.
 
 
-	-Used AIMA library and implemented the min-max tree alpha, beta pruning. 
-	-Used floodfill to handle our checking of captured pieces.
-	-SquatterGame class handles most of the grunt work for the algorithm, handling both the utility & get actions function. 
-	-Get actions has a significant role, by returning the most useful moves for that boards state.Moves that are diagonal in nature have a higher priority as we have found these the most effective in game playing.
-	-Utility function mainly checks to see if we will capture any pieces or if the opponent will capture any pieces. The simplicity of this method is too reduce computational complexity.
+SEARCH STRATEGY
+Initially, our player makes some initial moves without conducting any searching, according to a specific chosen strategy.  This was to improve efficiency because the first moves are the most expensive in terms of search, and was also deemed appropriate given that there is little information to be gained from creating a search tree when the board is almost empty at the beginning of the game. After these initial moves, our player conducts a minmax search to a given depth and selects the best move.  By conducting alpha beta pruning, the size of the search tree is significantly reduced, therefore increasing the speed of our search.
+
+As well as the decision-making process, the player needed a way to efficiently check the board state for captured pieces and keep track of the score.  It was very important this this be done quickly, as the score would be needed to evaluate the score for every possible board state in the minmax search tree.  The captured-piece checking was done via an implementation of the floodFill algorithm.  The pseudocode for floodFill is shown below:
+	
+	when a new move is made by player 'p':
+		for each adjacent cell 'adj' (not including diagonally adjacent cells):
+			'captured' = empty arraylist
+			'queue' = empty arraylist
+			add 'adj' to 'queue'
+			while 'queue' not empty:
+				'cell' = first item in queue
+				if 'cell' is on boundary of board:
+					/* have reached edge, and therefore this region has not been captured */
+					return
+				else if 'cell' does NOT have one of p's pieces:
+					if 'cell' is not in 'captured'
+						add 'cell' to end of 'queue'
+					end if
+					add 'cell' to 'captured'
+				end if
+			end while loop
+			mark all cells in 'captured' as captured
+		end for loop
+	end
+
+We chose to implement this algorithm using a queue rather than a recursive stack method in order to minimuse memory usage.
+
+
+
+EVALUATION FUNCTION
+Our evaluation function measures the utility for a given board state for a given player.  If the game is in a terminal state, it returns a very high/low default utility value if the given player has won/lost, or returns 0 if the game is a draw.  If the game is not in a terminal state, the utility is based on the following three factors, in ascending order of the weight of their contribution:
+
+	1. Corner squares (smallest contribution to utility)
+		If the given player has any pieces in the four corners of the board, the utility is decreased.  This is because there is nothing to be gained from playing pieces in the corners of the board (it does not help capture pieces, or block the opponent from capturing pieces).
+
+	2. The number of strings of pieces
+		Pieces are captured by forming strings of connected pieces.  Our utility function checks the number of strings of the given player's pieces there are on the game board.  Note that a string of connected pieces is defined to be three connected pieces, each in either different columns (a horizontal string) or in different rows (a vertical string).
+		For example
+			WW						W
+			  W 		and         W 					are both strings, whereas
+			  						W
+
+			WW						W
+			 W   		and         WW 					are not.
+
+		This encourages the player to try to form strings of pieces, thereby getting into positions where it can capture cells. 
+	
+	3. The score of each player (largest contributio to utility)
+		Ultimately, it is the score of each player that most significantly impacts the outcome of the game, and the utility of a given board state.  The score for each player in a given board state has the most significant impact on the utility of that board state.
+
+	By keeping this utility function relatively simple, we were able to search to a greater depth.  It was decided that we would prioritise the depth of the search over the detail of the utility function - adding to much detail to the utility function would slow doen the player without adding any particularly useful information.
+
+
+CREATIVE TECHNIQUES
+The most significant addition we made to the implementation of minmax was the order in which nodes were searched.  In order to maximise the impact of the alpha-beta-pruning, we added a short method to the SquatterGame class which quickly approximates the utility/effectiveness of a given move.  The moves that are available for a given board state are then returned in descending order of this approximate utility.  This then means that board states with a high utility are likely to be expanded earlier on in the minmax search, allowing for more pruning to occur throughout the rest of the search.  Calculating the approximate utility of each move needed to be a quick, easy to do process in order for this to improve the player's overall efficiency, and thus the approximate utility of a move is based solely on the number of diagonally adjacent cells that contain pieces of either colour.
+
+We also edited the AlphaBetaSearch class in order to allow for the depth of the search to be increased gradually as the game progresses.  As the game goes on, the number of possible moves decreases, and thus the branching factor of the minmax search decreases which has a significant effect on search time.  As a result of the decreased search time later in the game, there was therefore room to increase the depth of the search as the game progresses.  However, when we altered our player so that it searched to a greater depth as the game wore on, our player became weaker against opponents in a lot of cases.  This was likely a result of the fact that minmax makes the best possible move based on the assumption that the opponent thinks the same way (i.e. has the same utility function) and looks to the same depth.  When this was not the case, our player would defend against opponents' moves too far in advance, therefore leaving itself vulnerable to smaller but more immediate threats.  Thus, this feature was removed, and the player continued to search to the same depth for the duration of the game.
+
+Finally, although machine learning was not implemented, the player was tested with a range of different weights for each of the three utility factors mentioned above in order to fine-tune the weights.
+			 						 
+
+
+
+
+
+

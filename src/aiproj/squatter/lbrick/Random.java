@@ -17,7 +17,11 @@ public class Random implements Player, Piece {
     private boolean invalidMove;
     private Scanner reader;
 
-
+    /**
+     * Created by lochiebrick on 20/05/15.
+     * Lochlan Brick lbrick 638126
+     * Nathan Malishev nmalishev 637410
+     */
     public int init(int n, int p) {
         invalidMove = false;
         if((board = new Board(n)) != null

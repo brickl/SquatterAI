@@ -1,0 +1,1 @@
+Main-Class: aiproj.squatter.lbrick.lbrick

@@ -6,6 +6,12 @@ import java.util.Scanner;
 
 import java.io.PrintStream;
 
+/**
+ * Created by lochiebrick on 20/05/15.
+ * Lochlan Brick lbrick 638126
+ * Nathan Malishev nmalishev 637410
+ */
+
 public class User implements Player, Piece {
 
     private Board board;
@@ -41,12 +47,6 @@ public class User implements Player, Piece {
         System.out.println("Enter the row and column of your next move (with a space in between)");
         m.Row = reader.nextInt();
         m.Col = reader.nextInt();
-
-		while(!board.isValid(m)) {
-            System.out.println("Invalid input.  Try again.");
-            m.Row = reader.nextInt();
-            m.Col = reader.nextInt();
-        }
 
         board.recordMove(m);
         return m;

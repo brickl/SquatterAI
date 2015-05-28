@@ -4,7 +4,9 @@ import java.util.Comparator;
 import java.util.Map;
 
 /**
- * Created by nathan on 25/05/15.
+ * Created by Nathan on 20/05/15.
+ * Lochlan Brick lbrick 638126
+ * Nathan Malishev nmalishev 637410
  */
 
 //This comparator will create a descending keyset - change the comparison if you want ascending
