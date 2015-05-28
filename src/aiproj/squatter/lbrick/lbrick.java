@@ -15,7 +15,7 @@ public class lbrick implements Player, Piece {
 	private SquatterGame game;
 	private int playerPiece, opponentPiece, moveCount;
 	private boolean invalidMove;
-    private AlphaBetaSearch gameEngine;
+    	private AlphaBetaSearch gameEngine;
 	//Default set up for a board not size 6 or 7
 	private int depth_step = 8;
 	private int default_moves =3;
@@ -75,9 +75,7 @@ public class lbrick implements Player, Piece {
             //m = (Move)mms.makeDecision(b);
 			m = (Move)this.gameEngine.makeDecision(b);
 
-            if(moveCount % depth_step == 0){
-                gameEngine.setDepth( gameEngine.getDepth()+1);
-            }
+            
         }
         else {
 //           what we can do instead of minmax for early turns?
